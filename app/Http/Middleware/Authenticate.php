@@ -35,7 +35,8 @@ class Authenticate
      */
     public function handle($request, Closure $next, $guard = null)
     {
-        if ($this->auth->guard($guard)->guest()) {
+        $routeInfo = $request->route()[1];
+        if ($this->auth->guard($guard)->guest() && $routeInfo['as'] !== 'auth') {
             return response('Unauthorized.', 401);
         }
 

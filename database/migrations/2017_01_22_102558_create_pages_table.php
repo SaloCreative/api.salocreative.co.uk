@@ -13,7 +13,7 @@ class CreatePagesTable extends Migration
      */
     public function up()
     {
-        Schema::create('page', function (Blueprint $table) {
+        Schema::create('pages', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title');
             $table->string('slug')->unique();
@@ -34,6 +34,6 @@ class CreatePagesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('page');
+        Schema::dropIfExists('pages');
     }
 }

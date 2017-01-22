@@ -11,9 +11,14 @@
 |
 */
 
-$app->group(['prefix' => '/api/v1', 'namespace' => 'App\Http\Controllers', 'middleware' => 'auth'], function () use ($app) {
+$app->get('/', function () use ($app) {
+    return $app->version();
+});
+
+$app->group(['prefix' => '/api/v1', 'middleware' => 'auth'], function () use ($app) {
 
     // Authentication
     $app->post('/auth/login', ['as' => 'auth', 'uses' => 'AuthController@login' ]);
+    $app->get('/auth/login', ['as' => 'auth', 'uses' => 'AuthController@test' ]);
 
 });

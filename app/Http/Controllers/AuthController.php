@@ -13,15 +13,19 @@ class AuthController extends Controller
     {
         $email = Input::get('email');
         $password = Input::get('password');
-        $hash = Hash::make($password);
 
-        $user = User::where('email', '=', $email)->where('password', '=', $hash)->first();
+        $user = User::where('email', '=', $email)->first();
 
-        if ($user) {
+        if (Hash::check($password, $user->password)) {
             return [ 'token' => $user->password ];
         }
 
         return new Response(['error' => 'Login Failed'], Response::HTTP_UNAUTHORIZED);
+    }
+
+    public function test()
+    {
+        return 'success';
     }
 
 }

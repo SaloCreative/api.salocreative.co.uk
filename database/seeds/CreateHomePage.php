@@ -12,7 +12,7 @@ class CreateHomePage extends Seeder
     public function run()
     {
 
-        DB::table('page')->insert([
+        DB::table('pages')->insert([
             'title' => 'Rich',
             'slug' => 'home',
             'content' => ('<p>This the homepage sample content</p>'),

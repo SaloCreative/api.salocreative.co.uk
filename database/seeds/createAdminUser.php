@@ -13,7 +13,7 @@ class CreateAdminUser extends Seeder
     public function run()
     {
 
-        DB::table('user')->insert([
+        DB::table('users')->insert([
             'name' => 'Rich',
             'surname' => 'Comber',
             'company' => 'Salo Creative',

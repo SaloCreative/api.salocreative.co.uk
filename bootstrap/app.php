@@ -95,7 +95,7 @@ $app->register(App\Providers\CatchAllOptionsRequestsProvider::class);
 |
 */
 
-$app->group(['namespace' => 'API\Http\Controllers'], function ($app) {
+$app->group(['namespace' => 'App\Http\Controllers'], function ($app) {
     require __DIR__.'/../app/Http/routes.php';
 });
 
