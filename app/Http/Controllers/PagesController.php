@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Page;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Input;
 
 class PagesController extends Controller
