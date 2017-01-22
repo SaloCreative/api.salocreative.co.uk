@@ -11,7 +11,9 @@
 |
 */
 
-$app->get('/', function () use ($app) {
-    $result = DB::select("SELECT * FROM user");
-    return $result;
+$app->group(['prefix' => '/api/v1', 'namespace' => 'App\Http\Controllers', 'middleware' => 'auth'], function () use ($app) {
+
+    // Authentication
+    $app->post('/auth/login', ['as' => 'auth', 'uses' => 'AuthController@login' ]);
+
 });
