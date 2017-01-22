@@ -23,9 +23,4 @@ class AuthController extends Controller
         return new Response(['error' => 'Login Failed'], Response::HTTP_UNAUTHORIZED);
     }
 
-    public function test()
-    {
-        return 'success';
-    }
-
 }

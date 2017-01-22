@@ -19,6 +19,5 @@ $app->group(['prefix' => '/api/v1', 'middleware' => 'auth'], function () use ($a
 
     // Authentication
     $app->post('/auth/login', ['as' => 'auth', 'uses' => 'AuthController@login' ]);
-    $app->get('/auth/login', ['as' => 'auth', 'uses' => 'AuthController@test' ]);
 
 });
