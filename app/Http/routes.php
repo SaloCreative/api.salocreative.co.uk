@@ -17,6 +17,9 @@ $app->get('/', function () use ($app) {
 
 $app->group(['prefix' => '/api/v1', 'middleware' => 'auth'], function () use ($app) {
 
+    // Users
+    $app->get('/users/me', ['as' => 'userMe', 'uses' => 'UserController@me']);
+
     // Authentication
     $app->post('/auth/login', ['as' => 'auth', 'uses' => 'AuthController@login' ]);
 

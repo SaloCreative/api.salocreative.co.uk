@@ -34,7 +34,7 @@ class AuthServiceProvider extends ServiceProvider
         Auth::viaRequest('api', function ($request) {
             $token = $request->header('x-api-token');
             if ($token) {
-                return User::byToken($token)->first();
+                return User::byToken($token)->where('suspended', '=', false)->first();
             }
         });
     }

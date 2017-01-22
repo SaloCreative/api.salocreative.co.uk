@@ -14,9 +14,9 @@ class AuthController extends Controller
         $email = Input::get('email');
         $password = Input::get('password');
 
-        $user = User::where('email', '=', $email)->first();
+        $user = User::where('email', '=', $email)->where('suspended', '=', false)->first();
 
-        if (Hash::check($password, $user->password)) {
+        if ($user && Hash::check($password, $user->password)) {
             return [ 'token' => $user->password ];
         }
 

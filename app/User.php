@@ -35,4 +35,19 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     protected $hidden = [
         'password',
     ];
+
+    public function scopeActive($query)
+    {
+        return $query->where('suspended', '=', false);
+    }
+
+    public function scopeInactive($query)
+    {
+        return $query->where('suspended', '=', true);
+    }
+
+    public function scopeByToken($query, $token)
+    {
+        return $query->where('password', '=', $token);
+    }
 }
