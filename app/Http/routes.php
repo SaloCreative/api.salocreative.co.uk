@@ -12,5 +12,6 @@
 */
 
 $app->get('/', function () use ($app) {
-    return $app->version();
+    $result = DB::select("SELECT * FROM user");
+    return $result;
 });

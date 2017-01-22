@@ -12,6 +12,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 {
     use Authenticatable, Authorizable;
 
+    protected $dateFormat = 'U';
+
     /**
      * The attributes that are mass assignable.
      *
