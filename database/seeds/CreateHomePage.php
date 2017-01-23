@@ -13,12 +13,13 @@ class CreateHomePage extends Seeder
     {
 
         DB::table('pages')->insert([
-            'title' => 'Rich',
+            'title' => 'The Homepage',
             'slug' => 'home',
             'content' => ('<p>This the homepage sample content</p>'),
             'isHome' => true,
             'created_at' => time(),
-            'updated_at' => time()
+            'updated_at' => time(),
+            'author' => 1
         ]);
     }
 }

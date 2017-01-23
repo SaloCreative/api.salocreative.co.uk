@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Page;
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Input;
 
 class PagesController extends Controller
@@ -27,5 +30,32 @@ class PagesController extends Controller
         return $pages;
     }
 
+    public function show($pageID)
+    {
+        $page = Page::findOrFail($pageID);
+        return $page;
+    }
+
+    public function update(Request $request, $pageID)
+    {
+        $data = Input::all();
+        $editingUser = User::byToken($request->header('x-api-token'))->firstOrFail();
+
+       $page = Page::findOrFail($pageID);
+       $page->fill($data);
+       $page->editor()->associate($editingUser);
+        $saved = $page->save();
+
+        $response = new Response();
+
+        if ($saved === true) {
+            $response->setStatusCode(Response::HTTP_NO_CONTENT);
+            return $response;
+        }
+
+        $response->setContent([ 'error' => 'Unknown error' ]);
+        $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+        return $response;
+    }
 
 }

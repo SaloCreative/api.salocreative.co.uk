@@ -23,7 +23,9 @@ class Page extends Model
         'parent' => 'integer',
         'online' => 'boolean',
         'inNav' => 'boolean',
-        'isHome' => 'boolean'
+        'isHome' => 'boolean',
+        'author' => 'integer',
+        'editor' => 'integer'
     ];
 
     public function scopeActive($query)
@@ -34,5 +36,15 @@ class Page extends Model
     public function scopeInactive($query)
     {
         return $query->where('online', '=', false);
+    }
+
+    public function editor()
+    {
+        return $this->belongsTo(User::class, 'editor', App::make(User::class)->getKeyName());
+    }
+
+    public function author()
+    {
+        return $this->belongsTo(User::class, 'author', App::make(User::class)->getKeyName());
     }
 }
