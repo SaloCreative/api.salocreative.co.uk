@@ -19,6 +19,7 @@ class CreatePagesTable extends Migration
             $table->string('slug')->unique();
             $table->text('content');
             $table->integer('parent')->default(0);
+            $table->integer('template')->default(1);
             $table->boolean('online')->default(true);
             $table->boolean('inNav')->default(true);
             $table->boolean('isHome')->default(false);
