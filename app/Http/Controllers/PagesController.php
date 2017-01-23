@@ -30,6 +30,30 @@ class PagesController extends Controller
         return $pages;
     }
 
+    public function create(Request $request)
+    {
+        $data = Input::all();
+        $creatingUser = User::byToken($request->header('x-api-token'))->firstOrFail();
+
+        $page = new Page();
+        $page->fill($data);
+        // $page->author()->associate($creatingUser);
+        $saved = $page->save();
+
+        $response = new Response();
+
+        if ($saved === true) {
+            $response->setStatusCode(Response::HTTP_CREATED);
+            $response->headers->set('Location', route('page', $page->id));
+            $response->setContent($this->show($page->id));
+            return $response;
+        }
+
+        $response->setContent([ 'error' => 'Unknown error' ]);
+        $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+        return $response;
+    }
+
     public function show($pageID)
     {
         $page = Page::findOrFail($pageID);

@@ -26,6 +26,8 @@ $app->group(['prefix' => '/api/v1', 'middleware' => 'auth'], function () use ($a
 
     // Pages
     $app->get('/pages', ['as' => 'pages', 'uses' => 'PagesController@index']);
+    $app->post('/pages', ['as' => 'pageCreate', 'uses' => 'PagesController@create']);
+
     $app->get('/pages/{page:[0-9]+}', ['as' => 'page', 'uses' => 'PagesController@show']);
     $app->put('/pages/{page:[0-9]+}', ['as' => 'pageUpdate', 'uses' => 'PagesController@update']);
 
