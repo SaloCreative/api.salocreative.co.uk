@@ -38,7 +38,14 @@ class PagesController extends Controller
         $page = new Page();
         $page->fill($data);
         // $page->author()->associate($creatingUser);
-        $saved = $page->save();
+
+        if(!empty($data['parent_id'])) {
+            $parent = Page::find($data['parent_id']);
+            $parent->addChild($page);
+            $saved = true;
+        } else {
+            $saved = $page->save();
+        }
 
         $response = new Response();
 
@@ -68,6 +75,9 @@ class PagesController extends Controller
        $page = Page::findOrFail($pageID);
        $page->fill($data);
        $page->editor()->associate($editingUser);
+        if(!empty($data['parent_id'])) {
+            $page->moveTo(0, Page::find($data['parent_id']));
+        }
         $saved = $page->save();
 
         $response = new Response();
