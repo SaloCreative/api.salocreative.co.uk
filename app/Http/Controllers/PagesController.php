@@ -30,6 +30,12 @@ class PagesController extends Controller
         return $pages;
     }
 
+    public function tree()
+    {
+        $tree = Page::getTree();
+        return $tree;
+    }
+
     public function create(Request $request)
     {
         $data = Input::all();
@@ -79,7 +85,7 @@ class PagesController extends Controller
             if(!empty($data['parent_id'])) {
                 $page->moveTo(0, Page::find($data['parent_id']));
             } else {
-                $page->makeRoot(99);
+                $page->makeRoot(0);
             }
         }
         $saved = $page->save();
