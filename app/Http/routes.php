@@ -27,7 +27,7 @@ $app->group(['prefix' => '/api/v1'], function () use ($app) {
     // Pages
     $app->get('/pages', ['as' => 'pages', 'uses' => 'PagesController@index']);
     $app->get('/pages/tree', ['as' => 'pageTree', 'uses' => 'PagesController@tree']);
-    $app->get('/pages/tree/update', ['as' => 'pageTreeUpdate', 'uses' => 'PagesController@treeUpdate']);
+    $app->get('/pages/hierarchical', ['as' => 'pageTreeUpdate', 'uses' => 'PagesController@flatTree']);
     $app->post('/pages', ['as' => 'pageCreate', 'uses' => 'PagesController@create']);
 
     $app->get('/pages/{page:[0-9]+}', ['as' => 'page', 'uses' => 'PagesController@show']);

@@ -37,15 +37,43 @@ class PagesController extends Controller
         return $tree;
     }
 
-    public function treeUpdate()
+    public function flatTree()
     {
-        $page = Page::find(4);
-        $descendants = $page->getDescendantsWhere('id', '=', 11);
-        if($descendants->isEmpty()) {
-            return 'No descendants';
-        } else {
-            return 'Has descendants';
+        $result = array();
+        $roots = Page::getRoots();
+        foreach($roots as $parent) {
+            array_push($result, $parent);
+
+            $page = Page::find($parent->id);
+
+            if ($page->hasChildren()) {
+                $childTree = $this->buildFlatTree($page);
+                array_push($result, $childTree);
+            }
         }
+
+        $objTmp = (object) array('aFlat' => array());
+        array_walk_recursive($result, create_function('&$v, $k, &$t', '$t->aFlat[] = $v;'), $objTmp);
+        return $objTmp->aFlat;
+    }
+
+    public function buildFlatTree($page)
+    {
+        $result = array();
+
+        $children = $page->getChildren();
+
+        foreach($children as $child) {
+            array_push($result, $child);
+
+            $page = Page::find($child->id);
+            if ($page->hasChildren()) {
+                $childTree = $this->buildFlatTree($page);
+                array_merge($result, $childTree);
+            }
+        }
+
+        return $result;
     }
 
     public function create(Request $request)
