@@ -121,9 +121,9 @@ class PagesController extends Controller
        $page = Page::findOrFail($pageID);
        $page->fill($data);
        $page->editor()->associate($editingUser);
-        $parentID = $data['parent_id'];
 
-        if(isset($parentID) && $parentID !== $pageID) {
+        if(isset($data['parent_id']) && $data['parent_id'] !== $pageID) {
+            $parentID = isset($data['parent_id']);
             $descendants = $page->getDescendantsWhere('id', '=', $parentID);
             if($descendants->isEmpty()) {
                 if (!empty($parentID)) {
