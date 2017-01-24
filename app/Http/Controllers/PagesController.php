@@ -123,7 +123,7 @@ class PagesController extends Controller
        $page->editor()->associate($editingUser);
 
         if(isset($data['parent_id']) && $data['parent_id'] !== $pageID) {
-            $parentID = isset($data['parent_id']);
+            $parentID = $data['parent_id'];
             $descendants = $page->getDescendantsWhere('id', '=', $parentID);
             if($descendants->isEmpty()) {
                 if (!empty($parentID)) {
