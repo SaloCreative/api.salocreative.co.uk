@@ -75,8 +75,12 @@ class PagesController extends Controller
        $page = Page::findOrFail($pageID);
        $page->fill($data);
        $page->editor()->associate($editingUser);
-        if(!empty($data['parent_id'])) {
-            $page->moveTo(0, Page::find($data['parent_id']));
+        if(isset($data['parent_id'])) {
+            if(!empty($data['parent_id'])) {
+                $page->moveTo(0, Page::find($data['parent_id']));
+            } else {
+                $page->makeRoot(99);
+            }
         }
         $saved = $page->save();
 
