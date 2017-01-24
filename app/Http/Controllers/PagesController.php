@@ -6,6 +6,7 @@ use App\Page;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Input;
 
@@ -30,6 +31,23 @@ class PagesController extends Controller
         return $pages;
     }
 
+    public function tree()
+    {
+        $tree = Page::getTree();
+        return $tree;
+    }
+
+    public function treeUpdate()
+    {
+        $page = Page::find(4);
+        $descendants = $page->getDescendantsWhere('id', '=', 11);
+        if($descendants->isEmpty()) {
+            return 'No descendants';
+        } else {
+            return 'Has descendants';
+        }
+    }
+
     public function create(Request $request)
     {
         $data = Input::all();
@@ -38,7 +56,14 @@ class PagesController extends Controller
         $page = new Page();
         $page->fill($data);
         // $page->author()->associate($creatingUser);
-        $saved = $page->save();
+
+        if(!empty($data['parent_id'])) {
+            $parent = Page::find($data['parent_id']);
+            $parent->addChild($page);
+            $saved = true;
+        } else {
+            $saved = $page->save();
+        }
 
         $response = new Response();
 
@@ -68,6 +93,18 @@ class PagesController extends Controller
        $page = Page::findOrFail($pageID);
        $page->fill($data);
        $page->editor()->associate($editingUser);
+        $parentID = $data['parent_id'];
+
+        if(isset($parentID)) {
+            $descendants = $page->getDescendantsWhere('id', '=', $parentID);
+            if($descendants->isEmpty()) {
+                if (!empty($parentID)) {
+                    $page->moveTo(0, Page::find($parentID));
+                } else {
+                    $page->makeRoot(0);
+                }
+            }
+        }
         $saved = $page->save();
 
         $response = new Response();

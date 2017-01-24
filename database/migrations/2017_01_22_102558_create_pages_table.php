@@ -18,7 +18,7 @@ class CreatePagesTable extends Migration
             $table->string('title');
             $table->string('slug')->unique();
             $table->text('content');
-            $table->integer('parent')->default(0);
+            $table->integer('parent_id')->unsigned()->nullable();
             $table->integer('template')->default(1);
             $table->boolean('online')->default(true);
             $table->boolean('inNav')->default(true);
@@ -29,6 +29,11 @@ class CreatePagesTable extends Migration
             $table->integer('updated_at');
             $table->string('author');
             $table->integer('created_at');
+            $table->integer('position', false, true);
+            $table->integer('real_depth', false, true);
+            $table->softDeletes();
+
+            $table->foreign('parent_id')->references('id')->on('pages')->onDelete('set null');
         });
     }
 

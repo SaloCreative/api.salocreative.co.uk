@@ -4,10 +4,14 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
+use Franzose\ClosureTable\Models\Entity;
 
-class Page extends Model
+
+class Page extends Entity implements pageInterface
 {
 
+
+    protected $table = 'pages';
     protected $dateFormat = 'U';
 
     /**
@@ -18,6 +22,8 @@ class Page extends Model
     protected $fillable = [
         'title', 'slug', 'content', 'parent', 'online', 'inNav', 'isHome'
     ];
+
+    protected $closure = 'App\pageClosure';
 
     protected $casts = [
         'parent' => 'integer',
