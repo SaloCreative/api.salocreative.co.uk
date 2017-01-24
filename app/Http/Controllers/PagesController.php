@@ -69,7 +69,7 @@ class PagesController extends Controller
             $page = Page::find($child->id);
             if ($page->hasChildren()) {
                 $childTree = $this->buildFlatTree($page);
-                array_merge($result, $childTree);
+                array_push($result, $childTree);
             }
         }
 
