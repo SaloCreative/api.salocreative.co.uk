@@ -25,7 +25,9 @@ class CreateBlogTable extends Migration
             $table->integer('updated_at');
             $table->string('author');
             $table->integer('created_at');
+            $table->integer('publish_date');
             $table->softDeletes();
+
         });
     }
 

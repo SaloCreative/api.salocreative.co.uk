@@ -15,8 +15,8 @@ $app->get('/', function () use ($app) {
     return $app->version();
 });
 
-//$app->group(['prefix' => '/api/v1', 'middleware' => 'auth'], function () use ($app) {
-$app->group(['prefix' => '/api/v1'], function () use ($app) {
+$app->group(['prefix' => '/api/v1', 'middleware' => 'auth'], function () use ($app) {
+//$app->group(['prefix' => '/api/v1'], function () use ($app) {
 
     // Users
     $app->get('/users/me', ['as' => 'userMe', 'uses' => 'UserController@me']);
