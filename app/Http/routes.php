@@ -28,13 +28,15 @@ $app->group(['prefix' => '/api/v1', 'middleware' => 'auth'], function () use ($a
     $app->get('/pages', ['as' => 'pages', 'uses' => 'PagesController@index']);
     $app->get('/pages/tree', ['as' => 'pageTree', 'uses' => 'PagesController@tree']);
     $app->get('/pages/hierarchical', ['as' => 'pageTreeUpdate', 'uses' => 'PagesController@flatTree']);
-
     $app->post('/pages', ['as' => 'pageCreate', 'uses' => 'PagesController@create']);
-
     $app->get('/pages/{page:[0-9]+}', ['as' => 'page', 'uses' => 'PagesController@show']);
     $app->put('/pages/{page:[0-9]+}', ['as' => 'pageUpdate', 'uses' => 'PagesController@update']);
     $app->put('/pages/move/{page: [0-9]+}', ['as' => 'pageMove', 'uses' => 'pagesController@movePage']);
 
-    $app->get('/pages/testing', ['as' => 'test', 'uses' => 'pagesController@testPage']);
+    // Blog
+    $app->get('/blogs', ['as' => 'blogs', 'uses' => 'BlogsController@index']);
+    $app->post('/blogs', ['as' => 'blogCreate', 'uses' => 'BlogsController@create']);
+    $app->get('/blogs/{blog:[0-9]+}', ['as' => 'page', 'uses' => 'BlogsController@show']);
+    $app->put('/blogs/{blog:[0-9]+}', ['as' => 'blogUpdate', 'uses' => 'BlogsController@update']);
 
 });

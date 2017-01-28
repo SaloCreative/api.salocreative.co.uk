@@ -174,24 +174,4 @@ class PagesController extends Controller
         return $response;
     }
 
-    public function testPage(Request $request)
-    {
-        $pageID = $request->query('id');
-        if(!empty($request->query('direction'))) {
-            $direction = $request->query('direction');
-            $page  = Page::findOrFail($pageID);
-            if($direction == 'up') {
-                $sibling = $page->getPrevSiblings()->last();
-            } else {
-                $sibling = $page->getNextSiblings()->first();
-            }
-            if(isset($sibling)) {
-                $sibling->position;
-                return $sibling;
-                //$page->position = $sibling->position;
-                //$page->save();
-            }
-        }
-    }
-
 }
