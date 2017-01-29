@@ -38,7 +38,6 @@ class BlogsController extends Controller
 
         $blog = new Blog();
         $blog->fill($data);
-        $blog->author()->associate($creatingUser);
 
         $saved = $blog->save();
 
