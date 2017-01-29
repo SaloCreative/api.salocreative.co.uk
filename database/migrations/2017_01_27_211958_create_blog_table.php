@@ -23,10 +23,11 @@ class CreateBlogTable extends Migration
             $table->text('seo-description');
             $table->string('editor');
             $table->integer('updated_at');
-            $table->string('author');
+            $table->string('author')->default(1);
             $table->integer('created_at');
             $table->integer('publish_date');
             $table->softDeletes();
+            //$table->foreign('category_id')->references('id')->on('blog_categories')->onDelete('set null');
 
         });
     }
