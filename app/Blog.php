@@ -16,7 +16,7 @@ class Blog extends Model
      * @var array
      */
     protected $fillable = [
-        'title', 'slug', 'content', 'online', 'author', 'editor', 'seo-title', 'seo-description'
+        'title', 'slug', 'content', 'online', 'author', 'editor', 'seo_title', 'seo_description'
     ];
 
     protected $casts = [

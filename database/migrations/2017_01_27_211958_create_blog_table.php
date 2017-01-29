@@ -19,8 +19,8 @@ class CreateBlogTable extends Migration
             $table->string('slug')->unique();
             $table->text('content');
             $table->boolean('online')->default(true);
-            $table->string('seo-title');
-            $table->text('seo-description');
+            $table->string('seo_title');
+            $table->text('seo_description');
             $table->string('editor');
             $table->integer('updated_at');
             $table->string('author')->default(1);
