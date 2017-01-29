@@ -23,8 +23,8 @@ class CreatePagesTable extends Migration
             $table->boolean('online')->default(true);
             $table->boolean('inNav')->default(true);
             $table->boolean('isHome')->default(false);
-            $table->string('seo-title');
-            $table->text('seo-description');
+            $table->string('seo_title');
+            $table->text('seo_description');
             $table->string('editor');
             $table->integer('updated_at');
             $table->string('author');

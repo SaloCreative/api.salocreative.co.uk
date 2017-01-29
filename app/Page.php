@@ -20,7 +20,7 @@ class Page extends Entity implements pageInterface
      * @var array
      */
     protected $fillable = [
-        'title', 'slug', 'content', 'parent', 'online', 'inNav', 'isHome', 'seo-title', 'seo-description'
+        'title', 'slug', 'content', 'parent', 'online', 'inNav', 'isHome', 'seo_title', 'seo_description'
     ];
 
     protected $closure = 'App\pageClosure';
