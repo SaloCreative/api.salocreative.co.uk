@@ -19,7 +19,7 @@ class PagesController extends Controller
         $orderByDirectionsAllowed = [ 'ASC', 'DESC' ];
         $orderByColumn = !empty($request->query('orderBy')) ? $request->query('orderBy') : 'id';
         $orderByDirection = !empty($request->query('orderByDirection')) ?: $orderByDirectionsAllowed[0];
-        if (!in_array($orderByDirection, $orderByDirectionsAllowed) === false) {
+        if (in_array($orderByDirection, $orderByDirectionsAllowed) === false) {
             $orderByDirection = $orderByDirectionsAllowed[0];
         }
 

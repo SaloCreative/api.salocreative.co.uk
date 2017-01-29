@@ -18,17 +18,17 @@ class BlogsController extends Controller
         // Ordering
         $orderByDirectionsAllowed = [ 'ASC', 'DESC' ];
         $orderByColumn = !empty($request->query('orderBy')) ? $request->query('orderBy') : 'id';
-        $orderByDirection = !empty($request->query('orderByDirection')) ?: $orderByDirectionsAllowed[0];
-        if (!in_array($orderByDirection, $orderByDirectionsAllowed) === false) {
+        $orderByDirection = !empty($request->query('orderByDirection')) ? $request->query('orderByDirection') : $orderByDirectionsAllowed[0];
+        if (in_array($orderByDirection, $orderByDirectionsAllowed) === false) {
             $orderByDirection = $orderByDirectionsAllowed[0];
         }
 
-        $pages = Blog::orderBy($orderByColumn, $orderByDirection);
-        $perPage = $request->query('perPage') ?:9999;
-        $pages = $pages->paginate($perPage);
-        $pages->appends(Input::except('page'));
+        $posts = Blog::orderBy($orderByColumn, $orderByDirection);
+        $perPage = !empty($request->query('perPage')) ? $request->query('perPage') : 9999;
+        $posts = $posts->paginate($perPage);
+        $posts->appends(Input::except('page'));
 
-        return $pages;
+        return $posts;
     }
 
     public function create(Request $request)
