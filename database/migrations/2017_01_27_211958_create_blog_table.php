@@ -18,6 +18,7 @@ class CreateBlogTable extends Migration
             $table->string('title');
             $table->string('slug')->unique();
             $table->text('content');
+            $table->integer('category_id')->unsigned()->nullable();
             $table->boolean('online')->default(true);
             $table->string('seo_title');
             $table->text('seo_description');
@@ -27,9 +28,13 @@ class CreateBlogTable extends Migration
             $table->integer('created_at');
             $table->integer('publish_date');
             $table->softDeletes();
-            $table->foreign('category_id')->references('id')->on('blog_categories')->onDelete('set null');
 
         });
+
+        Schema::table('blogs', function($table) {
+            $table->foreign('category_id')->references('id')->on('blog_categories')->onDelete('set null');
+        });
+
     }
 
     /**
