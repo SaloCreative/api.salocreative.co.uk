@@ -10,7 +10,7 @@ class BlogCategory extends Model
 
     protected $dateFormat = 'U';
 
-    protected $table = 'page_closure';
+    protected $table = 'blog_categories';
 
     /**
      * The attributes that are mass assignable.
