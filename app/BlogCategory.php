@@ -34,4 +34,9 @@ class BlogCategory extends Model
     {
         return $query->where('online', '=', false);
     }
+
+    public function posts()
+    {
+        return $this->hasMany(Blog::class, App::make(BlogCategory::class)->getKeyName());
+    }
 }
