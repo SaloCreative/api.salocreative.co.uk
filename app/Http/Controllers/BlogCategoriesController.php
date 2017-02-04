@@ -30,22 +30,21 @@ class BlogCategoriesController extends Controller
         return $categories;
     }
 
-    /*public function create(Request $request)
+    public function create()
     {
         $data = Input::all();
-        $creatingUser = User::byToken($request->header('x-api-token'))->firstOrFail();
 
-        $blog = new Blog();
-        $blog->fill($data);
+        $blogCategory = new BlogCategory();
+        $blogCategory->fill($data);
 
-        $saved = $blog->save();
+        $saved = $blogCategory->save();
 
         $response = new Response();
 
         if ($saved === true) {
             $response->setStatusCode(Response::HTTP_CREATED);
-            $response->headers->set('Location', route('page', $blog->id));
-            $response->setContent($this->show($blog->id));
+            $response->headers->set('Location', route('page', $blogCategory->id));
+            $response->setContent($this->show($blogCategory->id));
             return $response;
         }
 
@@ -53,6 +52,14 @@ class BlogCategoriesController extends Controller
         $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
         return $response;
     }
+
+    public function show($blogCategoryID)
+    {
+        $blogCategory = BlogCategory::findOrFail($blogCategoryID);
+        return $blogCategory;
+    }
+
+    /*
 
     public function show($blogID)
     {

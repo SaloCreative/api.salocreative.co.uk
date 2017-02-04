@@ -39,5 +39,6 @@ $app->group(['prefix' => '/api/v1'], function () use ($app) {
     $app->get('/blogs/{blog:[0-9]+}', ['as' => 'page', 'uses' => 'BlogsController@show']);
     $app->put('/blogs/{blog:[0-9]+}', ['as' => 'blogUpdate', 'uses' => 'BlogsController@update']);
     $app->get('/blogs/categories', ['as' => 'blogCategories', 'uses' => 'BlogCategoriesController@index']);
+    $app->post('/blogs/categories', ['as' => 'blogCategoryCreate', 'uses' => 'BlogCategoriesController@create']);
 
 });
