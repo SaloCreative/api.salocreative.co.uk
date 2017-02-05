@@ -18,6 +18,7 @@ class CreateBlogCategories extends Migration
             $table->string('title');
             $table->string('slug')->unique();
             $table->boolean('online')->default(true);
+            $table->boolean('deletable')->default(true);
             $table->string('seo_title');
             $table->text('seo_description');
             $table->integer('updated_at');
