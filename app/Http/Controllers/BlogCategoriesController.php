@@ -16,14 +16,14 @@ class BlogCategoriesController extends Controller
     {
         // Ordering
         $orderByDirectionsAllowed = [ 'ASC', 'DESC' ];
-        $orderByColumn = !empty($request->query('orderBy')) ? $request->query('orderBy') : 'id';
+        $orderByColumn = !empty($request->query('orderBy')) &&  $request->query('orderBy') !== 'undefined' ? $request->query('orderBy') : 'title';
         $orderByDirection = !empty($request->query('orderByDirection')) ? $request->query('orderByDirection') : $orderByDirectionsAllowed[0];
         if (in_array($orderByDirection, $orderByDirectionsAllowed) === false) {
             $orderByDirection = $orderByDirectionsAllowed[0];
         }
 
         $categories = BlogCategory::orderBy($orderByColumn, $orderByDirection);
-        $perPage = !empty($request->query('perPage')) ? $request->query('perPage') : 9999;
+        $perPage = !empty($request->query('perPage')) && $request->query('perPage') !== 'undefined' ? $request->query('perPage') : 9999;
         $categories = $categories->paginate($perPage);
         $categories->appends(Input::except('page'));
 

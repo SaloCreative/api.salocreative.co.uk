@@ -16,13 +16,14 @@ class Blog extends Model
      * @var array
      */
     protected $fillable = [
-        'title', 'slug', 'content', 'online', 'author', 'editor', 'seo_title', 'seo_description'
+        'title', 'slug', 'content', 'category_id', 'online', 'author', 'editor', 'seo_title', 'seo_description'
     ];
 
     protected $casts = [
         'online' => 'boolean',
         'author' => 'integer',
-        'editor' => 'integer'
+        'editor' => 'integer',
+        'category_id' => 'integer'
     ];
 
     public function scopeActive($query)
