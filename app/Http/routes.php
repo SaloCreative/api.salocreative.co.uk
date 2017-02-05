@@ -40,5 +40,6 @@ $app->group(['prefix' => '/api/v1'], function () use ($app) {
     $app->put('/blogs/{blog:[0-9]+}', ['as' => 'blogUpdate', 'uses' => 'BlogsController@update']);
     $app->get('/blogs/categories', ['as' => 'blogCategories', 'uses' => 'BlogCategoriesController@index']);
     $app->post('/blogs/categories', ['as' => 'blogCategoryCreate', 'uses' => 'BlogCategoriesController@create']);
+    $app->delete('/blogs/categories/{blogCategoryID:[0-9]+}', ['as' => 'blogCategoryDelete', 'uses' => 'BlogCategoriesController@delete']);
 
 });

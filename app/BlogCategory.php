@@ -4,9 +4,12 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class BlogCategory extends Model
 {
+
+    use SoftDeletes;
 
     protected $dateFormat = 'U';
 
@@ -24,6 +27,9 @@ class BlogCategory extends Model
     protected $casts = [
         'online' => 'boolean'
     ];
+
+    protected $dates = ['deleted_at'];
+
 
     public function scopeActive($query)
     {

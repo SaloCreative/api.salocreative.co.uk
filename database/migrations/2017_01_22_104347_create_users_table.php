@@ -25,6 +25,7 @@ class CreateUsersTable extends Migration
             $table->boolean('suspended')->default(false);
             $table->integer('updated_at');
             $table->integer('created_at');
+            $table->integer('deleted_at')->nullable();
         });
     }
 

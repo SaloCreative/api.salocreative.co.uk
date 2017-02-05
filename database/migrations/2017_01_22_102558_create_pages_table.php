@@ -31,7 +31,7 @@ class CreatePagesTable extends Migration
             $table->integer('created_at');
             $table->integer('position', false, true);
             $table->integer('real_depth', false, true);
-            $table->softDeletes();
+            $table->integer('deleted_at')->nullable();
 
             $table->foreign('parent_id')->references('id')->on('pages')->onDelete('set null');
         });

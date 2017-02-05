@@ -27,8 +27,7 @@ class CreateBlogTable extends Migration
             $table->string('author')->default(1);
             $table->integer('created_at');
             $table->integer('publish_date');
-            $table->softDeletes();
-
+            $table->integer('deleted_at')->nullable();
         });
 
         Schema::table('blogs', function($table) {

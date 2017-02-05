@@ -59,6 +59,14 @@ class BlogCategoriesController extends Controller
         return $blogCategory;
     }
 
+    public function delete(Request $request, $blogCategoryID)
+    {
+        $blogCategory = BlogCategory::findOrFail($blogCategoryID);
+        $deleted = $blogCategory->delete();
+
+        return ['status' => $deleted];
+    }
+
     /*
 
     public function show($blogID)
