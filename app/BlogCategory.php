@@ -4,7 +4,6 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class BlogCategory extends Model
 {
@@ -26,8 +25,10 @@ class BlogCategory extends Model
         'online' => 'boolean'
     ];
 
-    protected $dates = ['deleted_at'];
-
+    public function scopeDeletable($query)
+    {
+        return $query->where('deletable', '=', true);
+    }
 
     public function scopeActive($query)
     {
