@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\BlogCategory;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
@@ -67,24 +68,14 @@ class BlogCategoriesController extends Controller
         return ['status' => $deleted];
     }
 
-    /*
-
-    public function show($blogID)
-    {
-        $blog = Blog::findOrFail($blogID);
-        return $blog;
-    }
-
-    public function update(Request $request, $blogID)
+    public function update($blogCategoryID)
     {
         $data = Input::all();
-        $editingUser = User::byToken($request->header('x-api-token'))->firstOrFail();
 
-        $blog = Blog::findOrFail($blogID);
-        $blog->fill($data);
-        $blog->editor()->associate($editingUser);
+        $blogCategory = BlogCategory::findOrFail($blogCategoryID);
+        $blogCategory->fill($data);
 
-        $saved = $blog->save();
+        $saved = $blogCategory->save();
 
         $response = new Response();
 
@@ -96,6 +87,14 @@ class BlogCategoriesController extends Controller
         $response->setContent([ 'error' => 'Unknown error' ]);
         $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
         return $response;
+    }
+
+    /*
+
+    public function show($blogID)
+    {
+        $blog = Blog::findOrFail($blogID);
+        return $blog;
     }
 
     public function testBlog(Request $request)
