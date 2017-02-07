@@ -91,12 +91,6 @@ class BlogCategoriesController extends Controller
 
     /*
 
-    public function show($blogID)
-    {
-        $blog = Blog::findOrFail($blogID);
-        return $blog;
-    }
-
     public function testBlog(Request $request)
     {
         $blogID = $request->query('id');
