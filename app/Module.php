@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\App;
 
 class Module extends Model
 {
-
     /**
      * The attributes that are mass assignable.
      *
@@ -19,6 +18,8 @@ class Module extends Model
 
     protected $casts = [
         'available' => 'boolean',
-        'active' => 'boolean'
+        'active' => 'boolean',
+        'required' => 'boolean',
+        'userLevel' => 'integer'
     ];
 }

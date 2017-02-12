@@ -24,8 +24,7 @@ class ModulesController extends Controller
 
         $available = !empty($request->query('available')) ? $request->query('available') : 1;
 
-        $modules = Module::orderBy($orderByColumn, $orderByDirection)->where('available', '=', $available);
-
+        $modules = Module::orderBy($orderByColumn, $orderByDirection)->where('available', '=', $available)->get();
         return $modules;
     }
 

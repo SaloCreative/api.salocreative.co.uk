@@ -13,5 +13,6 @@ class DatabaseSeeder extends Seeder
     {
         $this->call('CreateAdminUser');
         $this->call('CreateBlogCategory');
+        $this->call(CreateModules::class);
     }
 }
