@@ -84,24 +84,4 @@ class BlogsController extends Controller
         return $response;
     }
 
-    public function testBlog(Request $request)
-    {
-        $blogID = $request->query('id');
-        if(!empty($request->query('direction'))) {
-            $direction = $request->query('direction');
-            $blog  = Blog::findOrFail($blogID);
-            if($direction == 'up') {
-                $sibling = $blog->getPrevSiblings()->last();
-            } else {
-                $sibling = $blog->getNextSiblings()->first();
-            }
-            if(isset($sibling)) {
-                $sibling->position;
-                return $sibling;
-                //$blog->position = $sibling->position;
-                //$blog->save();
-            }
-        }
-    }
-
 }
