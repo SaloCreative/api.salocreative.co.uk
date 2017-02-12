@@ -46,5 +46,6 @@ $app->group(['prefix' => '/api/v1', 'middleware' => 'auth'], function () use ($a
 
     // Settings
     $app->get('/settings/modules', ['as' => 'modules', 'uses' => 'ModulesController@index']);
+    $app->put('/settings/modules/{module: [0-9]+}', ['as' => 'moduleUpdate', 'uses' => 'ModulesController@update']);
 
 });

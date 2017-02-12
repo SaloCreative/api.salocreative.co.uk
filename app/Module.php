@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\App;
 
 class Module extends Model
 {
+    public $timestamps = false;
+
     /**
      * The attributes that are mass assignable.
      *

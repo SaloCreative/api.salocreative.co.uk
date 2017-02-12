@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Module;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
@@ -26,6 +27,26 @@ class ModulesController extends Controller
 
         $modules = Module::orderBy($orderByColumn, $orderByDirection)->where('available', '=', $available)->get();
         return $modules;
+    }
+
+    public function update(Request $request, $moduleID)
+    {
+        $data = Input::all();
+        $module = Module::findOrFail($moduleID);
+        $module->fill($data);
+
+        $saved = $module->save();
+
+        $response = new Response();
+
+        if ($saved === true) {
+            $response->setStatusCode(Response::HTTP_NO_CONTENT);
+            return $response;
+        }
+
+        $response->setContent([ 'error' => 'Unknown error' ]);
+        $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+        return $response;
     }
 
 }
