@@ -49,4 +49,9 @@ class ModulesController extends Controller
         return $response;
     }
 
+    public function showByName($moduleName)
+    {
+        $module = Module::where('module', '=', $moduleName)->firstOrFail();
+        return $module;
+    }
 }

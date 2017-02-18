@@ -44,8 +44,9 @@ $app->group(['prefix' => '/api/v1', 'middleware' => 'auth'], function () use ($a
     $app->put('/pages/{page:[0-9]+}', ['as' => 'pageUpdate', 'uses' => 'PagesController@update']);
     $app->put('/pages/move/{page: [0-9]+}', ['as' => 'pageMove', 'uses' => 'pagesController@movePage']);
 
-    // Settings
+    // Settings - Modules
     $app->get('/settings/modules', ['as' => 'modules', 'uses' => 'ModulesController@index']);
     $app->put('/settings/modules/{module: [0-9]+}', ['as' => 'moduleUpdate', 'uses' => 'ModulesController@update']);
+    $app->get('/settings/modules/module/{moduleName}', ['as' => 'moduleByName', 'uses' => 'ModulesController@showByName']);
 
 });

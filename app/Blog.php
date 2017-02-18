@@ -16,10 +16,11 @@ class Blog extends Model
      * @var array
      */
     protected $fillable = [
-        'title', 'slug', 'content', 'category_id', 'online', 'author', 'editor', 'seo_title', 'seo_description'
+        'title', 'slug', 'content', 'category_id', 'online', 'author', 'editor', 'seo_title', 'seo_description', 'publish_date'
     ];
 
     protected $casts = [
+        'publish_date' => 'integer',
         'online' => 'boolean',
         'author' => 'integer',
         'editor' => 'integer',
