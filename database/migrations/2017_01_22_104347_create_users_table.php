@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\Artisan;
 
 class CreateUsersTable extends Migration
 {
@@ -27,6 +28,11 @@ class CreateUsersTable extends Migration
             $table->integer('created_at');
             $table->integer('deleted_at')->nullable();
         });
+
+        //now the data migration
+        Artisan::call('db:seed', [
+            '--class' => CreateAdminUser::class,
+        ]);
     }
 
     /**

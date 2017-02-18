@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\Artisan;
 
 class CreateBlogCategories extends Migration
 {
@@ -25,6 +26,12 @@ class CreateBlogCategories extends Migration
             $table->integer('created_at');
 
         });
+
+
+        //now the data migration
+        Artisan::call('db:seed', [
+            '--class' => CreateBlogCategory::class,
+        ]);
     }
 
     /**

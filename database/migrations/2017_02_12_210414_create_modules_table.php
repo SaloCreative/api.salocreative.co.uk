@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\Artisan;
 
 class CreateModulesTable extends Migration
 {
@@ -22,6 +23,11 @@ class CreateModulesTable extends Migration
             $table->integer('userLevel');
             $table->boolean('required')->default(false);
         });
+
+        //now the data migration
+        Artisan::call('db:seed', [
+            '--class' => CreateModules::class,
+        ]);
     }
 
     /**
