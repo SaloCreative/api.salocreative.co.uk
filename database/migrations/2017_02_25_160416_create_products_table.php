@@ -34,7 +34,7 @@ class CreateProductsTable extends Migration
         });
 
         Schema::table('products', function($table) {
-            $table->foreign('category_id')->references('id')->on('page_categories')->onDelete('set null');
+            $table->foreign('category_id')->references('id')->on('product_categories')->onDelete('set null');
         });
     }
 
@@ -45,9 +45,6 @@ class CreateProductsTable extends Migration
      */
     public function down()
     {
-        Schema::table('products', function(Blueprint $table)
-        {
-            Schema::dropIfExists('products');
-        });
+        Schema::dropIfExists('products');
     }
 }
