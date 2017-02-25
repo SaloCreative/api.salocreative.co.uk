@@ -49,7 +49,7 @@ $app->group(['prefix' => '/api/v1', 'middleware' => 'auth'], function () use ($a
     $app->post('/products', ['as' => 'productCreate', 'uses' => 'ProductsController@create']);
     $app->get('/products/{product:[0-9]+}', ['as' => 'product', 'uses' => 'ProductsController@show']);
     $app->put('/products/{product:[0-9]+}', ['as' => 'productUpdate', 'uses' => 'ProductsController@update']);
-    $app->delete('/products/{product:[0-9]+}', ['as' => 'productDelete', 'uses' => 'ProductController@delete']);
+    $app->delete('/products/{product:[0-9]+}', ['as' => 'productDelete', 'uses' => 'ProductsController@delete']);
 
     // Settings - Modules
     $app->get('/settings/modules', ['as' => 'modules', 'uses' => 'ModulesController@index']);

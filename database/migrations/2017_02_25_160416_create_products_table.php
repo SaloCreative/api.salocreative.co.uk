@@ -28,7 +28,6 @@ class CreateProductsTable extends Migration
             $table->integer('updated_at');
             $table->string('author')->default(1);
             $table->integer('created_at');
-            $table->integer('publish_date');
             $table->integer('deleted_at')->nullable();
 
         });
