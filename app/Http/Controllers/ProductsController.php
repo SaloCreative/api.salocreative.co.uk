@@ -61,6 +61,14 @@ class ProductsController extends Controller
         return $product;
     }
 
+    public function delete($productID)
+    {
+        $product = Product::findOrFail($productID);
+        $deleted = $product->delete();
+
+        return ['status' => $deleted];
+    }
+
     public function update(Request $request, $productID)
     {
         $data = Input::all();

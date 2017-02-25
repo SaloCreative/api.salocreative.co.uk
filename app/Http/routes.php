@@ -27,7 +27,7 @@ $app->group(['prefix' => '/api/v1', 'middleware' => 'auth'], function () use ($a
     // Blog
     $app->get('/blogs', ['as' => 'blogs', 'uses' => 'BlogsController@index']);
     $app->post('/blogs', ['as' => 'blogCreate', 'uses' => 'BlogsController@create']);
-    $app->get('/blogs/{blog:[0-9]+}', ['as' => 'page', 'uses' => 'BlogsController@show']);
+    $app->get('/blogs/{blog:[0-9]+}', ['as' => 'blog', 'uses' => 'BlogsController@show']);
     $app->put('/blogs/{blog:[0-9]+}', ['as' => 'blogUpdate', 'uses' => 'BlogsController@update']);
     $app->get('/blogs/categories', ['as' => 'blogCategories', 'uses' => 'BlogCategoriesController@index']);
     $app->get('/blogs/categories/{blogCategoryID:[0-9]+}', ['as' => 'blogCategory', 'uses' => 'BlogCategoriesController@show']);
@@ -43,6 +43,13 @@ $app->group(['prefix' => '/api/v1', 'middleware' => 'auth'], function () use ($a
     $app->get('/pages/{page:[0-9]+}', ['as' => 'page', 'uses' => 'PagesController@show']);
     $app->put('/pages/{page:[0-9]+}', ['as' => 'pageUpdate', 'uses' => 'PagesController@update']);
     $app->put('/pages/move/{page: [0-9]+}', ['as' => 'pageMove', 'uses' => 'pagesController@movePage']);
+
+    // Products
+    $app->get('/products', ['as' => 'products', 'uses' => 'ProductsController@index']);
+    $app->post('/products', ['as' => 'productCreate', 'uses' => 'ProductsController@create']);
+    $app->get('/products/{product:[0-9]+}', ['as' => 'product', 'uses' => 'ProductsController@show']);
+    $app->put('/products/{product:[0-9]+}', ['as' => 'productUpdate', 'uses' => 'ProductsController@update']);
+    $app->delete('/products/{product:[0-9]+}', ['as' => 'productDelete', 'uses' => 'ProductController@delete']);
 
     // Settings - Modules
     $app->get('/settings/modules', ['as' => 'modules', 'uses' => 'ModulesController@index']);
