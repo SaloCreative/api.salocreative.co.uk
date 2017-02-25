@@ -1,27 +1,14 @@
 <?php
+
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
-use Franzose\ClosureTable\Models\Entity;
 
-class ProductCategory extends Entity implements ProductCategoryInterface
+class ProductTag extends Model
 {
-    /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
 
-    protected $table = 'product_categories';
     protected $dateFormat = 'U';
-
-    /**
-     * ClosureTable model instance.
-     *
-     * @var ProductCategoryClosure
-     */
-    protected $closure = 'App\ProductCategoryClosure';
 
     /**
      * The attributes that are mass assignable.
@@ -46,8 +33,8 @@ class ProductCategory extends Entity implements ProductCategoryInterface
         return $query->where('online', '=', false);
     }
 
-    public function products()
+    public function posts()
     {
-        return $this->hasMany(Product::class, App::make(ProductCategory::class)->getKeyName());
+        return $this->hasMany(Product::class, App::make(ProductTag::class)->getKeyName());
     }
 }
