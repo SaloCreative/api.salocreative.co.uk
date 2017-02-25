@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Validator;
 
 class Product extends Model
 {
@@ -27,6 +28,22 @@ class Product extends Model
         'inStock' => 'integer',
         'category_id' => 'integer'
     ];
+
+    private $rules = array(
+        'title' => 'required',
+        'slug'  => 'required|unique:products',
+        'sku'  => 'required|unique:products'
+    );
+
+    public function validate($data)
+    {
+        $validator = Validator::make($data, $this->rules);
+        if ($validator->fails()) {
+            return $validator->messages();
+        } else {
+            return true;
+        }
+    }
 
     public function scopeActive($query)
     {

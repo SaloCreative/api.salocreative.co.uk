@@ -34,19 +34,28 @@ class ProductsController extends Controller
     public function create(Request $request)
     {
         $data = Input::all();
-        $creatingUser = User::byToken($request->header('x-api-token'))->firstOrFail();
-
         $product = new Product();
-        $product->fill($data);
-
-        $saved = $product->save();
 
         $response = new Response();
 
-        if ($saved === true) {
-            $response->setStatusCode(Response::HTTP_CREATED);
-            $response->headers->set('Location', route('page', $product->id));
-            $response->setContent($this->show($product->id));
+        // Validate Data
+        $validation = $product->validate($data);
+        if (is_bool($validation)) {
+
+            $creatingUser = User::byToken($request->header('x-api-token'))->firstOrFail();
+            $product->fill($data);
+            $saved = $product->save();
+
+            if ($saved === true) {
+                $response->setStatusCode(Response::HTTP_CREATED);
+                $response->headers->set('Location', route('page', $product->id));
+                $response->setContent($this->show($product->id));
+                return $response;
+            }
+
+        } else {
+            $response->setContent($validation);
+            $response->setStatusCode(Response::HTTP_BAD_REQUEST);
             return $response;
         }
 
