@@ -39,7 +39,7 @@ class ProductsController extends Controller
         $response = new Response();
 
         // Validate Data
-        $validation = $product->validate($data);
+        $validation = $product->validate($data, 'create', false);
         if (is_bool($validation)) {
 
             $creatingUser = User::byToken($request->header('x-api-token'))->firstOrFail();
@@ -81,18 +81,26 @@ class ProductsController extends Controller
     public function update(Request $request, $productID)
     {
         $data = Input::all();
-        $editingUser = User::byToken($request->header('x-api-token'))->firstOrFail();
-
         $product = Product::findOrFail($productID);
-        $product->fill($data);
-        $product->editor()->associate($editingUser);
-
-        $saved = $product->save();
-
         $response = new Response();
 
-        if ($saved === true) {
-            $response->setStatusCode(Response::HTTP_NO_CONTENT);
+        // Validate Data
+        $validation = $product->validate($data, 'update', $productID);
+        if (is_bool($validation)) {
+
+            $editingUser = User::byToken($request->header('x-api-token'))->firstOrFail();
+            $product->fill($data);
+            $product->editor()->associate($editingUser);
+            $saved = $product->save();
+
+            if ($saved === true) {
+                $response->setStatusCode(Response::HTTP_NO_CONTENT);
+                return $response;
+            }
+
+        } else {
+            $response->setContent($validation);
+            $response->setStatusCode(Response::HTTP_BAD_REQUEST);
             return $response;
         }
 

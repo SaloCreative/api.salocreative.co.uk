@@ -29,20 +29,38 @@ class Product extends Model
         'category_id' => 'integer'
     ];
 
-    private $rules = array(
-        'title' => 'required',
-        'slug'  => 'required|unique:products',
-        'sku'  => 'required|unique:products'
-    );
+    private $rules = [
+        'create' => [
+            'title' => 'required',
+            'slug'  => 'required|unique:products,slug',
+            'sku'  => 'required|unique:products,sku'
+        ],
+        'update' => [
+            'title' => 'required',
+            'slug'  => 'required|unique:products,slug,:id',
+            'sku'  => 'required|unique:products,sku,:id'
+        ]
+    ];
 
-    public function validate($data)
+    public function validate($data, $method, $id)
     {
-        $validator = Validator::make($data, $this->rules);
+        $currentRules = $this->buildValidationRules($method, $id);
+        $validator = Validator::make($data, $currentRules);
         if ($validator->fails()) {
             return $validator->messages();
         } else {
             return true;
         }
+    }
+
+    private function buildValidationRules($method, $id) {
+        $rules = $this->rules[$method];
+        if ($id) {
+            foreach ($rules as &$rule) {
+                $rule = str_replace(':id', $id, $rule);
+            }
+        }
+        return $rules;
     }
 
     public function scopeActive($query)
