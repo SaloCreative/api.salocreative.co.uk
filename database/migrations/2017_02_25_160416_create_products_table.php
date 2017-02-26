@@ -18,6 +18,7 @@ class CreateProductsTable extends Migration
             $table->string('title');
             $table->string('slug')->unique();
             $table->string('sku')->unique();
+            $table->double('price', 15, 2);
             $table->text('content');
             $table->integer('category_id')->unsigned()->nullable();
             $table->boolean('online')->default(false);

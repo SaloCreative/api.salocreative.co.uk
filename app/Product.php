@@ -18,7 +18,7 @@ class Product extends Model
      * @var array
      */
     protected $fillable = [
-        'title', 'slug', 'sku', 'content', 'category_id', 'inStock', 'online', 'author', 'editor', 'seo_title', 'seo_description'
+        'title', 'slug', 'sku', 'content', 'category_id', 'inStock', 'price', 'online', 'author', 'editor', 'seo_title', 'seo_description'
     ];
 
     protected $casts = [
