@@ -12,6 +12,8 @@ class ProductTag extends Model
     use SoftDeletes;
     protected $dateFormat = 'U';
 
+    protected $table = 'product_tags';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -28,11 +30,11 @@ class ProductTag extends Model
     private $rules = [
         'create' => [
             'title' => 'required',
-            'slug'  => 'required|unique:products,slug'
+            'slug'  => 'required|unique:product_tags,slug'
         ],
         'update' => [
             'title' => 'required',
-            'slug'  => 'required|unique:products,slug,:id'
+            'slug'  => 'required|unique:product_tags,slug,:id'
         ]
     ];
 

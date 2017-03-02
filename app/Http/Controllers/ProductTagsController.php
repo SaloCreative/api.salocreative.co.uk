@@ -42,7 +42,6 @@ class ProductTagsController extends Controller
         $validation = $productTag->validate($data, 'create', false);
         if (is_bool($validation)) {
 
-            $creatingUser = User::byToken($request->header('x-api-token'))->firstOrFail();
             $productTag->fill($data);
             $saved = $productTag->save();
 
@@ -85,13 +84,11 @@ class ProductTagsController extends Controller
         $productTag = ProductTag::findOrFail($productTagID);
         $response = new Response();
 
-        $// Validate Data
-        $validation = $productTag->validate($data, 'update', $productID);
+        // Validate Data
+        $validation = $productTag->validate($data, 'update', $productTagID);
         if (is_bool($validation)) {
 
-            $editingUser = User::byToken($request->header('x-api-token'))->firstOrFail();
             $productTag->fill($data);
-            $productTag->editor()->associate($editingUser);
             $saved = $productTag->save();
 
             if ($saved === true) {
