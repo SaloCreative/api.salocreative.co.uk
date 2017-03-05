@@ -107,4 +107,40 @@ class ProductTagsController extends Controller
         return $response;
     }
 
+    public function assign(Request $request, $productTagID)
+    {
+        $productTag = ProductTag::findOrFail($productTagID);
+
+        $response = new Response();
+
+        if(!empty($request->query('assignTo'))) {
+            $product = intval($request->query('assignTo'));
+            $productTag->products()->attach($product);
+            $response->setStatusCode(Response::HTTP_NO_CONTENT);
+        } else {
+            $response->setContent([ 'error' => 'No product set' ]);
+            $response->setStatusCode(Response::HTTP_BAD_REQUEST);
+        }
+
+        return $response;
+    }
+
+    public function remove(Request $request, $productTagID)
+    {
+        $productTag = ProductTag::findOrFail($productTagID);
+
+        $response = new Response();
+
+        if(!empty($request->query('assignTo'))) {
+            $product = intval($request->query('assignTo'));
+            $productTag->products()->detach($product);
+            $response->setStatusCode(Response::HTTP_NO_CONTENT);
+        } else {
+            $response->setContent([ 'error' => 'No product set' ]);
+            $response->setStatusCode(Response::HTTP_BAD_REQUEST);
+        }
+
+        return $response;
+    }
+
 }

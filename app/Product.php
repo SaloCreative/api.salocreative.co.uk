@@ -82,4 +82,9 @@ class Product extends Model
     {
         return $this->belongsTo(User::class, 'author', App::make(User::class)->getKeyName());
     }
+
+    public function tags()
+    {
+        return $this->belongsToMany(ProductTag::class);
+    }
 }

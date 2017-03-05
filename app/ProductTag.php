@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Validator;
 
 class ProductTag extends Model
 {
-    use SoftDeletes;
     protected $dateFormat = 'U';
 
     protected $table = 'product_tags';
@@ -69,8 +68,8 @@ class ProductTag extends Model
         return $query->where('online', '=', false);
     }
 
-    public function posts()
+    public function products()
     {
-        return $this->hasMany(Product::class, App::make(ProductTag::class)->getKeyName());
+        return $this->belongsToMany(Product::class);
     }
 }
