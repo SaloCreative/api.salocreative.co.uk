@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\ProductTag;
+use App\Product;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -114,8 +115,11 @@ class ProductTagsController extends Controller
         $response = new Response();
 
         if(!empty($request->query('assignTo'))) {
-            $product = intval($request->query('assignTo'));
-            $productTag->products()->attach($product);
+            $productID = intval($request->query('assignTo'));
+            $product = Product::findOrFail($productID);
+            if (!$productTag->products->contains($product->id)) {
+                $productTag->products()->attach($productID);
+            }
             $response->setStatusCode(Response::HTTP_NO_CONTENT);
         } else {
             $response->setContent([ 'error' => 'No product set' ]);
