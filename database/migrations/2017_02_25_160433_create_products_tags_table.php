@@ -22,7 +22,6 @@ class CreateProductsTagsTable extends Migration
             $table->text('seo_description');
             $table->integer('updated_at');
             $table->integer('created_at');
-            $table->integer('deleted_at');
         });
     }
 

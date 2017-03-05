@@ -57,6 +57,9 @@ $app->group(['prefix' => '/api/v1', 'middleware' => 'auth'], function () use ($a
     $app->put('/products/tags/{productsTagID:[0-9]+}', ['as' => 'productsTagUpdate', 'uses' => 'ProductTagsController@update']);
     $app->delete('/products/tags/{productsTagID:[0-9]+}', ['as' => 'productsTagDelete', 'uses' => 'ProductTagsController@delete']);
 
+    $app->post('/products/tags/assign/{productsTagID:[0-9]+}', ['as' => 'productsTagAssign', 'uses' => 'ProductTagsController@assign']);
+    $app->delete('/products/tags/assign/{productsTagID:[0-9]+}', ['as' => 'productsTagRemove', 'uses' => 'ProductTagsController@remove']);
+
     // Settings - Modules
     $app->get('/settings/modules', ['as' => 'modules', 'uses' => 'ModulesController@index']);
     $app->put('/settings/modules/{module: [0-9]+}', ['as' => 'moduleUpdate', 'uses' => 'ModulesController@update']);

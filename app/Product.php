@@ -42,6 +42,8 @@ class Product extends Model
         ]
     ];
 
+    protected $appends = ['tags'];
+
     public function validate($data, $method, $id)
     {
         $currentRules = $this->buildValidationRules($method, $id);
@@ -81,5 +83,15 @@ class Product extends Model
     public function author()
     {
         return $this->belongsTo(User::class, 'author', App::make(User::class)->getKeyName());
+    }
+
+    public function tags()
+    {
+        return $this->belongsToMany(ProductTag::class);
+    }
+
+    public function getTagsAttribute()
+    {
+        return $this->tags()->get();
     }
 }

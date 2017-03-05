@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\ProductTag;
+use App\Product;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -104,6 +105,45 @@ class ProductTagsController extends Controller
 
         $response->setContent([ 'error' => 'Unknown error' ]);
         $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+        return $response;
+    }
+
+    public function assign(Request $request, $productTagID)
+    {
+        $productTag = ProductTag::findOrFail($productTagID);
+
+        $response = new Response();
+
+        if(!empty($request->query('assignTo'))) {
+            $productID = intval($request->query('assignTo'));
+            $product = Product::findOrFail($productID);
+            if (!$productTag->products->contains($product->id)) {
+                $productTag->products()->attach($productID);
+            }
+            $response->setStatusCode(Response::HTTP_NO_CONTENT);
+        } else {
+            $response->setContent([ 'error' => 'No product set' ]);
+            $response->setStatusCode(Response::HTTP_BAD_REQUEST);
+        }
+
+        return $response;
+    }
+
+    public function remove(Request $request, $productTagID)
+    {
+        $productTag = ProductTag::findOrFail($productTagID);
+
+        $response = new Response();
+
+        if(!empty($request->query('assignTo'))) {
+            $product = intval($request->query('assignTo'));
+            $productTag->products()->detach($product);
+            $response->setStatusCode(Response::HTTP_NO_CONTENT);
+        } else {
+            $response->setContent([ 'error' => 'No product set' ]);
+            $response->setStatusCode(Response::HTTP_BAD_REQUEST);
+        }
+
         return $response;
     }
 
