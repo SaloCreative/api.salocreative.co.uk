@@ -144,4 +144,24 @@ class ProductCategoriesController extends Controller
         return $response;
     }
 
+    public function delete($productCategoryID)
+    {
+        $productCategory = ProductCategory::findOrFail($productCategoryID);
+        if($productCategory->hasChildren()) {
+            $children = $productCategory->getChildren();
+            if($productCategory->parent_id) {
+                foreach($children as $child) {
+                    $child->moveTo(0, ProductCategory::find($productCategory->parent_id));
+                }
+            } else {
+                foreach($children as $child) {
+                    $child->makeRoot(0);
+                }
+            }
+        }
+
+        $deleted = $productCategory->delete();
+
+        return ['status' => $deleted];
+    }
 }
