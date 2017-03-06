@@ -52,6 +52,7 @@ $app->group(['prefix' => '/api/v1', 'middleware' => 'auth'], function () use ($a
     $app->delete('/products/{product:[0-9]+}', ['as' => 'productDelete', 'uses' => 'ProductsController@delete']);
 
     $app->get('/products/categories', ['as' => 'productCategories', 'uses' => 'ProductCategoriesController@index']);
+    $app->get('/products/categories/tree', ['as' => 'productCategoriesTree', 'uses' => 'ProductCategoriesController@tree']);
     $app->get('/products/categories/{productsCategoryID:[0-9]+}', ['as' => 'productsCategory', 'uses' => 'ProductCategoriesController@show']);
     $app->post('/products/categories', ['as' => 'productsCategoryCreate', 'uses' => 'ProductCategoriesController@create']);
     $app->put('/products/categories/{productsCategoryID:[0-9]+}', ['as' => 'productsCategoryUpdate', 'uses' => 'ProductCategoriesController@update']);
