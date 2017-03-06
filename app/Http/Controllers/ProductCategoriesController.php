@@ -15,14 +15,14 @@ class ProductCategoriesController extends Controller
 
     public function tree()
     {
-        $tree = ProductCategory::getTree();
-        return $tree;
+        $tree = ProductCategory::getTree()->sortBy('title');
+        return $tree->values()->all();
     }
 
     public function index()
     {
         $result = array();
-        $roots = ProductCategory::getRoots();
+        $roots = ProductCategory::getRoots()->sortBy('title');
         foreach($roots as $parent) {
             array_push($result, $parent);
 
@@ -43,7 +43,7 @@ class ProductCategoriesController extends Controller
     {
         $result = array();
 
-        $children = $productCategory->getChildren();
+        $children = $productCategory->getChildren()->sortBy('title');
 
         foreach($children as $child) {
             array_push($result, $child);
