@@ -69,9 +69,7 @@ class ProductCategoriesController extends Controller
 
         if (is_bool($validation)) {
 
-            $creatingUser = User::byToken($request->header('x-api-token'))->firstOrFail();
             $productCategory->fill($data);
-            // $productCategory->author()->associate($creatingUser);
 
             if(!empty($data['parent_id'])) {
                 $parent = ProductCategory::find($data['parent_id']);
@@ -108,29 +106,36 @@ class ProductCategoriesController extends Controller
     public function update(Request $request, $productCategoryID)
     {
         $data = Input::all();
-        $editingUser = User::byToken($request->header('x-api-token'))->firstOrFail();
-
         $productCategory = ProductCategory::findOrFail($productCategoryID);
-        $productCategory->fill($data);
-        $productCategory->editor()->associate($editingUser);
-
-        if(isset($data['parent_id']) && $data['parent_id'] !== $productCategoryID) {
-            $parentID = $data['parent_id'];
-            $descendants = $productCategory->getDescendantsWhere('id', '=', $parentID);
-            if($descendants->isEmpty()) {
-                if (!empty($parentID)) {
-                    $productCategory->moveTo(0, ProductCategory::find($parentID));
-                } else {
-                    $productCategory->makeRoot(0);
-                }
-            }
-        }
-        $saved = $productCategory->save();
-
         $response = new Response();
 
-        if ($saved === true) {
-            $response->setStatusCode(Response::HTTP_NO_CONTENT);
+        // Validate Data
+        $validation = $productCategory->validate($data, 'update', $productCategoryID);
+
+        if (is_bool($validation)) {
+            $productCategory->fill($data);
+
+            if(isset($data['parent_id']) && $data['parent_id'] !== $productCategoryID) {
+                $parentID = $data['parent_id'];
+                $descendants = $productCategory->getDescendantsWhere('id', '=', $parentID);
+                if($descendants->isEmpty()) {
+                    if (!empty($parentID)) {
+                        $productCategory->moveTo(0, ProductCategory::find($parentID));
+                    } else {
+                        $productCategory->makeRoot(0);
+                    }
+                }
+            }
+            $saved = $productCategory->save();
+
+            if ($saved === true) {
+                $response->setStatusCode(Response::HTTP_NO_CONTENT);
+                return $response;
+            }
+
+        } else {
+            $response->setContent($validation);
+            $response->setStatusCode(Response::HTTP_BAD_REQUEST);
             return $response;
         }
 
