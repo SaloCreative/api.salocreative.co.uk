@@ -61,26 +61,36 @@ class ProductCategoriesController extends Controller
     public function create(Request $request)
     {
         $data = Input::all();
-        $creatingUser = User::byToken($request->header('x-api-token'))->firstOrFail();
-
         $productCategory = new ProductCategory();
-        $productCategory->fill($data);
-        // $productCategory->author()->associate($creatingUser);
-
-        if(!empty($data['parent_id'])) {
-            $parent = ProductCategory::find($data['parent_id']);
-            $parent->addChild($productCategory);
-            $saved = true;
-        } else {
-            $saved = $productCategory->save();
-        }
-
         $response = new Response();
 
-        if ($saved === true) {
-            $response->setStatusCode(Response::HTTP_CREATED);
-            $response->headers->set('Location', route('page', $productCategory->id));
-            $response->setContent($this->show($productCategory->id));
+        // Validate Data
+        $validation = $productCategory->validate($data, 'create', false);
+
+        if (is_bool($validation)) {
+
+            $creatingUser = User::byToken($request->header('x-api-token'))->firstOrFail();
+            $productCategory->fill($data);
+            // $productCategory->author()->associate($creatingUser);
+
+            if(!empty($data['parent_id'])) {
+                $parent = ProductCategory::find($data['parent_id']);
+                $parent->addChild($productCategory);
+                $saved = true;
+            } else {
+                $saved = $productCategory->save();
+            }
+
+            if ($saved === true) {
+                $response->setStatusCode(Response::HTTP_CREATED);
+                $response->headers->set('Location', route('page', $productCategory->id));
+                $response->setContent($this->show($productCategory->id));
+                return $response;
+            }
+
+        } else {
+            $response->setContent($validation);
+            $response->setStatusCode(Response::HTTP_BAD_REQUEST);
             return $response;
         }
 
