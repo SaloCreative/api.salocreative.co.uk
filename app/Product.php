@@ -29,6 +29,8 @@ class Product extends Model
         'category_id' => 'integer'
     ];
 
+    protected $appends = ['tags'];
+
     private $rules = [
         'create' => [
             'title' => 'required',
@@ -41,8 +43,6 @@ class Product extends Model
             'sku'  => 'required|unique:products,sku,:id'
         ]
     ];
-
-    protected $appends = ['tags'];
 
     public function validate($data, $method, $id)
     {
