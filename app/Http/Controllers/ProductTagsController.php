@@ -41,7 +41,7 @@ class ProductTagsController extends Controller
 
         // Validate Data
         $validation = $productTag->validate($data, 'create', false);
-        if (is_bool($validation)) {
+        if (is_bool($validation) && $validation) {
 
             $productTag->fill($data);
             $saved = $productTag->save();
@@ -87,7 +87,7 @@ class ProductTagsController extends Controller
 
         // Validate Data
         $validation = $productTag->validate($data, 'update', $productTagID);
-        if (is_bool($validation)) {
+        if (is_bool($validation) && $validation) {
 
             $productTag->fill($data);
             $saved = $productTag->save();
