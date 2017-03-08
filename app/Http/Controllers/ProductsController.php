@@ -40,7 +40,7 @@ class ProductsController extends Controller
 
         // Validate Data
         $validation = $product->validate($data, 'create', false);
-        if (is_bool($validation)) {
+        if (is_bool($validation) && $validation) {
 
             $creatingUser = User::byToken($request->header('x-api-token'))->firstOrFail();
             $product->fill($data);
@@ -86,7 +86,7 @@ class ProductsController extends Controller
 
         // Validate Data
         $validation = $product->validate($data, 'update', $productID);
-        if (is_bool($validation)) {
+        if (is_bool($validation) && $validation) {
 
             $editingUser = User::byToken($request->header('x-api-token'))->firstOrFail();
             $product->fill($data);

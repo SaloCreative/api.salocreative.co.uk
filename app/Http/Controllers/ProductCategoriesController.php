@@ -67,7 +67,7 @@ class ProductCategoriesController extends Controller
         // Validate Data
         $validation = $productCategory->validate($data, 'create', false);
 
-        if (is_bool($validation)) {
+        if (is_bool($validation) && $validation) {
 
             $productCategory->fill($data);
 
@@ -112,7 +112,7 @@ class ProductCategoriesController extends Controller
         // Validate Data
         $validation = $productCategory->validate($data, 'update', $productCategoryID);
 
-        if (is_bool($validation)) {
+        if (is_bool($validation) && $validation) {
             $productCategory->fill($data);
 
             if(isset($data['parent_id']) && $data['parent_id'] !== $productCategoryID) {
