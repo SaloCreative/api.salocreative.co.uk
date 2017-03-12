@@ -35,24 +35,7 @@ class MediaController extends Controller
     public function create(Request $request)
     {
 
-
         $media = new Media();
-        /* $media->fill($data);
-
-        $saved = $media->save();
-
-        $response = new Response();
-
-        if ($saved === true) {
-            $response->setStatusCode(Response::HTTP_CREATED);
-            $response->headers->set('Location', route('page', $media->id));
-            $response->setContent($this->show($media->id));
-            return $response;
-        }
-
-        $response->setContent([ 'error' => 'Unknown error' ]);
-        $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
-        */
         $file = Input::file('file');
 
         $filename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
@@ -70,9 +53,15 @@ class MediaController extends Controller
         }
 
         $saved = $media->save();
-
         $response = new Response();
-        $response->setStatusCode(Response::HTTP_CREATED);
+
+        if ($saved === true) {
+            $response->setStatusCode(Response::HTTP_CREATED);
+            return $response;
+        }
+
+        $response->setContent([ 'error' => 'Unknown error' ]);
+        $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
         return $response;
     }
 
