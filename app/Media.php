@@ -4,10 +4,11 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Media extends Model
 {
-
+    use SoftDeletes;
     protected $dateFormat = 'U';
 
     /**
@@ -16,7 +17,7 @@ class Media extends Model
      * @var array
      */
     protected $fillable = [
-        'title', 'slug', 'type', 'online', 'description', 'alt_tag'
+        'title', 'slug', 'type', 'online', 'dimensions', 'file_size', 'description', 'alt_tag'
     ];
 
     protected $casts = [

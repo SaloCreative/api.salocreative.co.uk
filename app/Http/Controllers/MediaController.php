@@ -33,7 +33,6 @@ class MediaController extends Controller
     public function create(Request $request)
     {
         $data = Input::all();
-        $creatingUser = User::byToken($request->header('x-api-token'))->firstOrFail();
 
         $media = new Media();
         $media->fill($data);
@@ -63,11 +62,9 @@ class MediaController extends Controller
     public function update(Request $request, $mediaID)
     {
         $data = Input::all();
-        $editingUser = User::byToken($request->header('x-api-token'))->firstOrFail();
 
         $media = Media::findOrFail($mediaID);
         $media->fill($data);
-        $media->editor()->associate($editingUser);
 
         $saved = $media->save();
 
