@@ -19,7 +19,9 @@ class CreateMediaTable extends Migration
             $table->string('slug')->unique();
             $table->string('file_size');
             $table->string('type');
-            $table->string('dimensions');
+            $table->string('mime');
+            $table->integer('dimension_width');
+            $table->integer('dimension_height');
             $table->string('alt_tag');
             $table->text('description');
             $table->integer('updated_at');

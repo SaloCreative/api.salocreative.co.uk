@@ -8,6 +8,8 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class MediaController extends Controller
 {
@@ -32,10 +34,10 @@ class MediaController extends Controller
 
     public function create(Request $request)
     {
-        $data = Input::all();
+
 
         $media = new Media();
-        $media->fill($data);
+        /* $media->fill($data);
 
         $saved = $media->save();
 
@@ -50,6 +52,27 @@ class MediaController extends Controller
 
         $response->setContent([ 'error' => 'Unknown error' ]);
         $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+        */
+        $file = Input::file('file');
+
+        $filename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+        $file_path = $filename . '-' . time() . '.' . $file->getClientOriginalExtension();
+
+        $media->title = $filename;
+        $media->slug = $file_path;
+        $media->type = $file->getClientOriginalExtension();
+        $media->mime = $file->getMimeType();
+        $media->file_size = $file->getSize();
+        list($a, $b) = explode('/', $media->mime);
+        if ($a == 'image') {
+            $media->dimension_height = getimagesize($file)[1];
+            $media->dimension_width = getimagesize($file)[0];
+        }
+
+        $saved = $media->save();
+
+        $response = new Response();
+        $response->setStatusCode(Response::HTTP_CREATED);
         return $response;
     }
 
