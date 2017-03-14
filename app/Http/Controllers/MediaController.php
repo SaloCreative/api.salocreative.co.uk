@@ -8,8 +8,10 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
+
+use Intervention\Image\ImageManagerStatic as CustomImage;
+CustomImage::configure(array('driver' => 'gd'));
 
 class MediaController extends Controller
 {
@@ -36,20 +38,23 @@ class MediaController extends Controller
     {
 
         $media = new Media();
-        $file = Input::file('file');
+        $file = $request->file('file');
 
+        $file->move(__DIR__.'/../../../public/assets', pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME) . '-' . time() . '.' . $file->getClientOriginalExtension());
         $filename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
         $file_path = $filename . '-' . time() . '.' . $file->getClientOriginalExtension();
+
+        $savedFile = __DIR__.'/../../../public/assets/'.$file_path;
 
         $media->title = $filename;
         $media->slug = $file_path;
         $media->type = $file->getClientOriginalExtension();
-        $media->mime = $file->getMimeType();
-        $media->file_size = $file->getSize();
+        $media->mime = File::mimeType($savedFile);
+        $media->file_size = File::size($savedFile);
         list($a, $b) = explode('/', $media->mime);
         if ($a == 'image') {
-            $media->dimension_height = getimagesize($file)[1];
-            $media->dimension_width = getimagesize($file)[0];
+            $media->dimension_height = getimagesize($savedFile)[1];
+            $media->dimension_width = getimagesize($savedFile)[0];
         }
 
         $saved = $media->save();
