@@ -84,6 +84,10 @@ $app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
 $app->register(App\Providers\CatchAllOptionsRequestsProvider::class);
 $app->register(Franzose\ClosureTable\ClosureTableServiceProvider::class);
+$app->register(Intervention\Image\ImageServiceProviderLumen::class);
+
+class_alias('Intervention\Image\Facades\Image', 'Image');
+
 
 /*
 |--------------------------------------------------------------------------

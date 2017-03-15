@@ -9,6 +9,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\File;
+use Intervention\Image\Facades\Image;
 
 use Intervention\Image\ImageManagerStatic as CustomImage;
 CustomImage::configure(array('driver' => 'gd'));
@@ -60,6 +61,11 @@ class MediaController extends Controller
         if ($a == 'image') {
             $media->dimension_height = getimagesize($savedFile)[1];
             $media->dimension_width = getimagesize($savedFile)[0];
+            $img = Image::make($savedFile);
+            $img->fit(350, 350, function ($constraint) {
+                $constraint->aspectRatio();
+            });
+            $img->save($basePath.'/thumb_'.$file_path);
         }
 
         $saved = $media->save();
