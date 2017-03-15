@@ -50,8 +50,9 @@ class MediaController extends Controller
         $file->move($basePath, $file_path);
 
         $media->title = $name;
-        $media->slug = $file_path;
-        $media->type = $file->getClientOriginalExtension();
+        $media->slug = $name . '_' . $time;
+        $media->folder = 'assets/' . $year . '/' . $month;
+        $media->type = $ext;
         $media->mime = File::mimeType($savedFile);
         $media->file_size = File::size($savedFile);
         list($a, $b) = explode('/', $media->mime);
@@ -155,7 +156,7 @@ class MediaController extends Controller
                     $constraint->aspectRatio();
                 });
             }
-            $img->save($basePath . '/' . $name . '_' . $image->label . '_' . $time . '.' . $ext);
+            $img->save($basePath . '/' . $name . '_' . $time . '_' . $image->label . '.' . $ext);
         }
     }
 }
