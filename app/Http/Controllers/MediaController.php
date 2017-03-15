@@ -40,11 +40,16 @@ class MediaController extends Controller
         $media = new Media();
         $file = $request->file('file');
 
-        $file->move(__DIR__.'/../../../public/assets', pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME) . '-' . time() . '.' . $file->getClientOriginalExtension());
+        $year = date('Y');
+        $month = date('m');
+
+        $basePath = __DIR__.'/../../../public/assets/'.$year.'/'.$month;
+
+        $file->move($basePath, pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME) . '-' . time() . '.' . $file->getClientOriginalExtension());
         $filename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
         $file_path = $filename . '-' . time() . '.' . $file->getClientOriginalExtension();
 
-        $savedFile = __DIR__.'/../../../public/assets/'.$file_path;
+        $savedFile = $basePath.'/'.$file_path;
 
         $media->title = $filename;
         $media->slug = $file_path;
