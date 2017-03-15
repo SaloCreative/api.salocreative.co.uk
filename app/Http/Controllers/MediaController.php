@@ -11,9 +11,6 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
 
-use Intervention\Image\ImageManagerStatic as CustomImage;
-CustomImage::configure(array('driver' => 'gd'));
-
 class MediaController extends Controller
 {
 
@@ -43,29 +40,27 @@ class MediaController extends Controller
 
         $year = date('Y');
         $month = date('m');
+        $time = time();
+        $ext = $file->getClientOriginalExtension();
+        $name = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+        $file_path = $name . '_' . $time . '.' . $ext;
+        $basePath = __DIR__ . '/../../../public/assets/' . $year . '/' . $month;
+        $savedFile = $basePath . '/' . $file_path;
 
-        $basePath = __DIR__.'/../../../public/assets/'.$year.'/'.$month;
+        $file->move($basePath, $file_path);
 
-        $file->move($basePath, pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME) . '-' . time() . '.' . $file->getClientOriginalExtension());
-        $filename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-        $file_path = $filename . '-' . time() . '.' . $file->getClientOriginalExtension();
-
-        $savedFile = $basePath.'/'.$file_path;
-
-        $media->title = $filename;
+        $media->title = $name;
         $media->slug = $file_path;
         $media->type = $file->getClientOriginalExtension();
         $media->mime = File::mimeType($savedFile);
         $media->file_size = File::size($savedFile);
         list($a, $b) = explode('/', $media->mime);
+
         if ($a == 'image') {
             $media->dimension_height = getimagesize($savedFile)[1];
             $media->dimension_width = getimagesize($savedFile)[0];
-            $img = Image::make($savedFile);
-            $img->fit(350, 350, function ($constraint) {
-                $constraint->aspectRatio();
-            });
-            $img->save($basePath.'/thumb_'.$file_path);
+
+            $this->generateImageSizes($savedFile, $basePath, $name, $time, $ext);
         }
 
         $saved = $media->save();
@@ -108,4 +103,59 @@ class MediaController extends Controller
         return $response;
     }
 
+    private function generateImageSizes($savedFile, $basePath, $name, $time, $ext)
+    {
+        $imageSizes = array(
+            (object) [
+                'label' => 'thumb',
+                'width' => 150,
+                'height' => 150,
+                'constraint' => 'fit'
+            ],
+            (object) [
+                'label' => 'medium',
+                'width' => 350,
+                'height' => 350,
+                'constraint' => 'fit'
+            ],
+            (object) [
+                'label' => 'large',
+                'width' => 1030,
+                'height' => null,
+                'constraint' => 'resize'
+            ],
+            (object) [
+                'label' => 'product_feature',
+                'width' => 680,
+                'height' => 480,
+                'constraint' => 'fit'
+            ],
+            (object) [
+                'label' => 'product_thumb',
+                'width' => 400,
+                'height' => 285,
+                'constraint' => 'fit'
+            ],
+            (object) [
+                'label' => 'blog_thumb',
+                'width' => 450,
+                'height' => 280,
+                'constraint' => 'fit'
+            ],
+        );
+
+        foreach ( $imageSizes as $image ) {
+            $img = Image::make($savedFile);
+            if($image->constraint == 'fit') {
+                $img->fit($image->width, $image->height, function ($constraint) {
+                    $constraint->aspectRatio();
+                });
+            } else {
+                $img->resize($image->width, $image->height, function ($constraint) {
+                    $constraint->aspectRatio();
+                });
+            }
+            $img->save($basePath . '/' . $name . '_' . $image->label . '_' . $time . '.' . $ext);
+        }
+    }
 }
