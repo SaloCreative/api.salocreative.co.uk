@@ -20,6 +20,7 @@ class CreateMediaTable extends Migration
             $table->string('folder');
             $table->string('file_size');
             $table->string('type');
+            $table->string('extension');
             $table->string('mime');
             $table->integer('dimension_width');
             $table->integer('dimension_height');

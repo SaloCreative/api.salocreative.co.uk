@@ -17,7 +17,7 @@ class Media extends Model
      * @var array
      */
     protected $fillable = [
-        'title', 'slug', 'type', 'online', 'dimensions', 'file_size', 'description', 'alt_tag', 'mime'
+        'title', 'slug', 'type', 'extension', 'online', 'dimensions', 'file_size', 'description', 'alt_tag', 'mime'
     ];
 
     protected $casts = [

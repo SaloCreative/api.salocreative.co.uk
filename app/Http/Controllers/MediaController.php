@@ -52,12 +52,13 @@ class MediaController extends Controller
         $media->title = $name;
         $media->slug = $name . '_' . $time;
         $media->folder = 'assets/' . $year . '/' . $month;
-        $media->type = $ext;
+        $media->extension = $ext;
         $media->mime = File::mimeType($savedFile);
         $media->file_size = File::size($savedFile);
         list($a, $b) = explode('/', $media->mime);
-
+        $media->type = 'file';
         if ($a == 'image') {
+            $media->type = 'image';
             $media->dimension_height = getimagesize($savedFile)[1];
             $media->dimension_width = getimagesize($savedFile)[0];
 
