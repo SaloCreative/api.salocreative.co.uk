@@ -105,7 +105,26 @@ class MediaController extends Controller
         return $response;
     }
 
-    private function generateImageSizes($savedFile, $basePath, $name, $time, $ext)
+    public function delete($mediaID)
+    {
+        $asset = Media::findOrFail($mediaID);
+        $deleted = $asset->delete();
+        $imageSizes = $this->getImageSizes();
+        $basePath = __DIR__ . '/../../../public/' . $asset->folder;
+        if ($asset->type === 'image') {
+            foreach ( $imageSizes as $image ) {
+                $path = $basePath . '/' . $asset->slug . '_' . $image->label . '.' . $asset->extension;
+                File::delete($path);
+            }
+        } else {
+            $path = $basePath . '/' . $asset->slug . '.' . $asset->extension;
+            File::delete($path);
+        }
+
+        return ['status' => $deleted];
+    }
+
+    private function getImageSizes()
     {
         $imageSizes = array(
             (object) [
@@ -115,10 +134,22 @@ class MediaController extends Controller
                 'constraint' => 'fit'
             ],
             (object) [
-                'label' => 'medium',
+                'label' => 'medium_thumb',
                 'width' => 350,
                 'height' => 350,
                 'constraint' => 'fit'
+            ],
+            (object) [
+                'label' => 'small',
+                'width' => 150,
+                'height' => null,
+                'constraint' => 'resize'
+            ],
+            (object) [
+                'label' => 'medium',
+                'width' => 350,
+                'height' => null,
+                'constraint' => 'resize'
             ],
             (object) [
                 'label' => 'large',
@@ -146,6 +177,12 @@ class MediaController extends Controller
             ],
         );
 
+        return $imageSizes;
+    }
+
+    private function generateImageSizes($savedFile, $basePath, $name, $time, $ext)
+    {
+        $imageSizes = $this->getImageSizes();
         foreach ( $imageSizes as $image ) {
             $img = Image::make($savedFile);
             if($image->constraint == 'fit') {
