@@ -111,15 +111,16 @@ class MediaController extends Controller
         $deleted = $asset->delete();
         $imageSizes = $this->getImageSizes();
         $basePath = __DIR__ . '/../../../public/' . $asset->folder;
+
         if ($asset->type === 'image') {
             foreach ( $imageSizes as $image ) {
                 $path = $basePath . '/' . $asset->slug . '_' . $image->label . '.' . $asset->extension;
                 File::delete($path);
             }
-        } else {
-            $path = $basePath . '/' . $asset->slug . '.' . $asset->extension;
-            File::delete($path);
         }
+
+        $path = $basePath . '/' . $asset->slug . '.' . $asset->extension;
+        File::delete($path);
 
         return ['status' => $deleted];
     }
