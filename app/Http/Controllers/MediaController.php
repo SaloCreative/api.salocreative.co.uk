@@ -17,14 +17,19 @@ class MediaController extends Controller
     public function index(Request $request)
     {
         // Ordering
-        $orderByDirectionsAllowed = [ 'ASC', 'DESC' ];
+        $orderByDirectionsAllowed = ['ASC', 'DESC'];
         $orderByColumn = !empty($request->query('orderBy')) ? $request->query('orderBy') : 'id';
         $orderByDirection = !empty($request->query('orderByDirection')) ? $request->query('orderByDirection') : $orderByDirectionsAllowed[0];
         if (in_array($orderByDirection, $orderByDirectionsAllowed) === false) {
             $orderByDirection = $orderByDirectionsAllowed[0];
         }
 
-        $media = Media::orderBy($orderByColumn, $orderByDirection);
+        if (!empty($request->query('type')) && $request->query('type') !== 'undefined') {
+            $media = Media::orderBy($orderByColumn, $orderByDirection)->where('type', '=', $request->query('type'));
+        } else {
+            $media = Media::orderBy($orderByColumn, $orderByDirection);
+        }
+
         $perPage = !empty($request->query('perPage')) ? $request->query('perPage') : 9999;
         $media = $media->paginate($perPage);
         $media->appends(Input::except('page'));
@@ -73,7 +78,7 @@ class MediaController extends Controller
             return $response;
         }
 
-        $response->setContent([ 'error' => 'Unknown error' ]);
+        $response->setContent(['error' => 'Unknown error']);
         $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
         return $response;
     }
@@ -100,7 +105,7 @@ class MediaController extends Controller
             return $response;
         }
 
-        $response->setContent([ 'error' => 'Unknown error' ]);
+        $response->setContent(['error' => 'Unknown error']);
         $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
         return $response;
     }
@@ -113,7 +118,7 @@ class MediaController extends Controller
         $basePath = __DIR__ . '/../../../public/' . $asset->folder;
 
         if ($asset->type === 'image') {
-            foreach ( $imageSizes as $image ) {
+            foreach ($imageSizes as $image) {
                 $path = $basePath . '/' . $asset->slug . '_' . $image->label . '.' . $asset->extension;
                 File::delete($path);
             }
@@ -128,49 +133,49 @@ class MediaController extends Controller
     private function getImageSizes()
     {
         $imageSizes = array(
-            (object) [
+            (object)[
                 'label' => 'thumb',
                 'width' => 150,
                 'height' => 150,
                 'constraint' => 'fit'
             ],
-            (object) [
+            (object)[
                 'label' => 'medium_thumb',
                 'width' => 350,
                 'height' => 350,
                 'constraint' => 'fit'
             ],
-            (object) [
+            (object)[
                 'label' => 'small',
                 'width' => 150,
                 'height' => null,
                 'constraint' => 'resize'
             ],
-            (object) [
+            (object)[
                 'label' => 'medium',
                 'width' => 350,
                 'height' => null,
                 'constraint' => 'resize'
             ],
-            (object) [
+            (object)[
                 'label' => 'large',
                 'width' => 1030,
                 'height' => null,
                 'constraint' => 'resize'
             ],
-            (object) [
+            (object)[
                 'label' => 'product_feature',
                 'width' => 680,
                 'height' => 480,
                 'constraint' => 'fit'
             ],
-            (object) [
+            (object)[
                 'label' => 'product_thumb',
                 'width' => 400,
                 'height' => 285,
                 'constraint' => 'fit'
             ],
-            (object) [
+            (object)[
                 'label' => 'blog_thumb',
                 'width' => 450,
                 'height' => 280,
@@ -184,9 +189,9 @@ class MediaController extends Controller
     private function generateImageSizes($savedFile, $basePath, $name, $time, $ext)
     {
         $imageSizes = $this->getImageSizes();
-        foreach ( $imageSizes as $image ) {
+        foreach ($imageSizes as $image) {
             $img = Image::make($savedFile);
-            if($image->constraint == 'fit') {
+            if ($image->constraint == 'fit') {
                 $img->fit($image->width, $image->height, function ($constraint) {
                     $constraint->aspectRatio();
                 });
