@@ -33,4 +33,10 @@ class Media extends Model
     {
         return $query->where('online', '=', false);
     }
+
+    public function imageable()
+    {
+        return $this->morphTo();
+    }
+
 }
