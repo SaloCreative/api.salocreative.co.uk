@@ -95,7 +95,7 @@ class Product extends Model
         return $this->tags()->get();
     }
 
-    public function featuredImage()
+    /* public function featuredImage()
     {
         return $this->morphOne(Media::class, 'imageable');
     }
@@ -104,5 +104,6 @@ class Product extends Model
     {
         return $this->featuredImage()->get();
     }
+    */
 
 }
