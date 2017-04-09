@@ -35,6 +35,13 @@ $app->group(['prefix' => '/api/v1', 'middleware' => 'auth'], function () use ($a
     $app->put('/blogs/categories/{blogCategoryID:[0-9]+}', ['as' => 'blogCategoryUpdate', 'uses' => 'BlogCategoriesController@update']);
     $app->delete('/blogs/categories/{blogCategoryID:[0-9]+}', ['as' => 'blogCategoryDelete', 'uses' => 'BlogCategoriesController@delete']);
 
+    // Media
+    $app->get('/media', ['as' => 'media', 'uses' => 'MediaController@index']);
+    $app->post('/media', ['as' => 'mediaUplaod', 'uses' => 'MediaController@create']);
+    $app->get('/media/{media:[0-9]+}', ['as' => 'media', 'uses' => 'MediaController@show']);
+    $app->put('/media/{media:[0-9]+}', ['as' => 'mediaUpdate', 'uses' => 'MediaController@update']);
+    $app->delete('/media/{media:[0-9]+}', ['as' => 'mediaDelete', 'uses' => 'MediaController@delete']);
+
     // Pages
     $app->get('/pages', ['as' => 'pages', 'uses' => 'PagesController@index']);
     $app->get('/pages/tree', ['as' => 'pageTree', 'uses' => 'PagesController@tree']);

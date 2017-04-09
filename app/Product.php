@@ -18,7 +18,7 @@ class Product extends Model
      * @var array
      */
     protected $fillable = [
-        'title', 'slug', 'sku', 'content', 'category_id', 'inStock', 'price', 'online', 'author', 'editor', 'seo_title', 'seo_description'
+        'title', 'slug', 'sku', 'content', 'category_id', 'inStock', 'price', 'online', 'author', 'editor', 'seo_title', 'seo_description', 'featured_image'
     ];
 
     protected $casts = [
@@ -94,4 +94,16 @@ class Product extends Model
     {
         return $this->tags()->get();
     }
+
+    /* public function featuredImage()
+    {
+        return $this->morphOne(Media::class, 'imageable');
+    }
+
+    public function getFeaturedImageAttribute()
+    {
+        return $this->featuredImage()->get();
+    }
+    */
+
 }
