@@ -65,6 +65,18 @@ $app->group(['prefix' => '/api/v1', 'middleware' => 'auth'], function () use ($a
     $app->put('/products/categories/{productsCategoryID:[0-9]+}', ['as' => 'productsCategoryUpdate', 'uses' => 'ProductCategoriesController@update']);
     $app->delete('/products/categories/{productsCategoryID:[0-9]+}', ['as' => 'productsCategoryDelete', 'uses' => 'ProductCategoriesController@delete']);
 
+    $app->get('/products/dimensions', ['as' => 'dimensions', 'uses' => 'DimensionsController@index']);
+    $app->get('/products/dimensions/{dimensionID:[0-9]+}', ['as' => 'dimension', 'uses' => 'DimensionsController@show']);
+    $app->post('/products/dimensions', ['as' => 'dimensionCreate', 'uses' => 'DimensionsController@create']);
+    $app->put('/products/dimensions/{dimensionID:[0-9]+}', ['as' => 'dimensionUpdate', 'uses' => 'DimensionsController@update']);
+    $app->delete('/products/dimensions/{dimensionID:[0-9]+}', ['as' => 'dimensionDelete', 'uses' => 'DimensionsController@delete']);
+
+    $app->get('/products/dimensions/fields', ['as' => 'dimensionFields', 'uses' => 'DimensionFieldsController@index']);
+    $app->get('/products/dimensions/fields/{dimensionFieldsID:[0-9]+}', ['as' => 'dimensionField', 'uses' => 'DimensionFieldsController@show']);
+    $app->post('/products/dimensions/fields', ['as' => 'dimensionFieldCreate', 'uses' => 'DimensionFieldsController@create']);
+    $app->put('/products/dimensions/fields/{dimensionFieldID:[0-9]+}', ['as' => 'dimensionFieldUpdate', 'uses' => 'DimensionFieldsController@update']);
+    $app->delete('/products/dimensions/fields/{dimensionFieldID:[0-9]+}', ['as' => 'dimensionFieldDelete', 'uses' => 'DimensionFieldsController@delete']);
+
     $app->get('/products/tags', ['as' => 'productsTags', 'uses' => 'ProductTagsController@index']);
     $app->get('/products/tags/{productsTagID:[0-9]+}', ['as' => 'productsTag', 'uses' => 'ProductTagsController@show']);
     $app->post('/products/tags', ['as' => 'productsTagCreate', 'uses' => 'ProductTagsController@create']);

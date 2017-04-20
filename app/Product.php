@@ -29,7 +29,7 @@ class Product extends Model
         'category_id' => 'integer'
     ];
 
-    protected $appends = ['tags'];
+    protected $appends = ['tags','dimensions'];
 
     private $rules = [
         'create' => [

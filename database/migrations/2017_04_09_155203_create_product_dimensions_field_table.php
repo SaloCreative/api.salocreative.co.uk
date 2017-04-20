@@ -29,6 +29,6 @@ class CreateProductDimensionsFieldTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('product_dimension_fields');
+        Schema::dropIfExists('dimension_fields');
     }
 }
