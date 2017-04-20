@@ -17,12 +17,14 @@ class CreateProductDimensionsTable extends Migration
             $table->increments('id');
             $table->integer('dimension');
             $table->integer('field')->unsigned()->nullable();
+            $table->integer('product_id')->unsigned()->nullable();
             $table->integer('updated_at');
             $table->integer('created_at');
         });
 
         Schema::table('dimensions', function($table) {
             $table->foreign('field')->references('id')->on('dimension_fields')->onDelete('cascade');
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
         });
     }
 

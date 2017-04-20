@@ -29,7 +29,7 @@ class Product extends Model
         'category_id' => 'integer'
     ];
 
-    protected $appends = ['tags','dimensions'];
+    protected $appends = ['tags', 'dimensions'];
 
     private $rules = [
         'create' => [
@@ -93,6 +93,16 @@ class Product extends Model
     public function getTagsAttribute()
     {
         return $this->tags()->get();
+    }
+
+    public function dimensions()
+    {
+        return $this->hasMany(Dimension::class);
+    }
+
+    public function getDimensionsAttribute()
+    {
+        return $this->dimensions()->get();
     }
 
     /* public function featuredImage()

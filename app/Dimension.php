@@ -17,14 +17,22 @@ class Dimension extends Model
         'dimension'
     ];
 
+    protected $appends = ['dimension_field'];
+
     public function product()
     {
         return $this->belongsTo(Product::class);
     }
 
-    public function dimension_field()
+    public function dimensionField()
     {
-        return $this->belongsTo(DimensionField::class);
+        $dimensionField = DimensionField::findOrFail($this->field);
+        return $dimensionField;
+    }
+
+    public function getDimensionFieldAttribute()
+    {
+        return $this->dimensionField();
     }
 
 }
