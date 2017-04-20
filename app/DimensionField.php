@@ -19,7 +19,7 @@ class DimensionField extends Model
 
     public function categories()
     {
-        return $this->belongsToMany(Product::class);
+        return $this->belongsToMany(ProductCategory::class);
     }
 
     public function dimensions()

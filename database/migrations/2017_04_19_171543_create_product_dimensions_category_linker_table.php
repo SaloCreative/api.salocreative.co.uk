@@ -13,13 +13,13 @@ class CreateProductDimensionsCategoryLinkerTable extends Migration
      */
     public function up()
     {
-        Schema::create('product_category_dimension_field', function (Blueprint $table) {
+        Schema::create('dimension_field_product_category', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('product_category_id')->unsigned()->nullable();
             $table->integer('dimension_field_id')->unsigned()->nullable();
         });
 
-        Schema::table('product_category_dimension_field', function($table) {
+        Schema::table('dimension_field_product_category', function($table) {
             $table->foreign('product_category_id')->references('id')->on('product_categories')->onDelete('cascade');
             $table->foreign('dimension_field_id')->references('id')->on('dimension_fields')->onDelete('cascade');;
         });
@@ -32,6 +32,6 @@ class CreateProductDimensionsCategoryLinkerTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('product_category_dimension_field');
+        Schema::dropIfExists('dimension_field_product_category');
     }
 }

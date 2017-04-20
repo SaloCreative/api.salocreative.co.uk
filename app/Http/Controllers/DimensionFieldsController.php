@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Product;
 use App\DimensionField;
+use App\ProductCategory;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -86,6 +87,27 @@ class DimensionFieldsController extends Controller
         $response->setContent([ 'error' => 'Unknown error' ]);
         $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
         return $response;
+    }
+
+    public function assign(Request $request, $dimensionFieldID)
+    {
+        $dimensionField = DimensionField::findOrFail($dimensionFieldID);
+
+        $categoryID = intval(json_decode($request->getContent())->category);
+        $response = new Response();
+
+        if (!empty($dimensionField) && !empty($categoryID)) {
+            $category = ProductCategory::findOrFail($categoryID);
+            if (!$dimensionField->categories->contains($category->id)) {
+                $dimensionField->categories()->attach($category);
+            }
+            $response->setStatusCode(Response::HTTP_NO_CONTENT);
+        } else {
+            $response->setContent([ 'error' => 'Unknown error' ]);
+            $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+        return $response;
+
     }
 
 }
