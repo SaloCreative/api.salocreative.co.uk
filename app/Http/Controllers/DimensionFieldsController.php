@@ -110,4 +110,23 @@ class DimensionFieldsController extends Controller
 
     }
 
+    public function remove(Request $request, $dimensionFieldID)
+    {
+        $dimensionField = DimensionField::findOrFail($dimensionFieldID);
+
+        $categoryID = intval(json_decode($request->getContent())->category);
+        $response = new Response();
+
+        if (!empty($dimensionField) && !empty($categoryID)) {
+            $category = ProductCategory::findOrFail($categoryID);
+            $dimensionField->categories()->detach($category);
+            $response->setStatusCode(Response::HTTP_NO_CONTENT);
+        } else {
+            $response->setContent([ 'error' => 'Unknown error' ]);
+            $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+        return $response;
+
+    }
+
 }
