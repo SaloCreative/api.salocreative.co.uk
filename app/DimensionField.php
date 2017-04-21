@@ -17,14 +17,21 @@ class DimensionField extends Model
         'label', 'type'
     ];
 
+    protected $appends = ['categories'];
+
     public function categories()
     {
         return $this->belongsToMany(ProductCategory::class);
     }
+
 
     public function dimensions()
     {
         return $this->hasMany(Dimension::class);
     }
 
+    public function getCategoriesAttribute()
+    {
+        return $this->categories()->get();
+    }
 }
