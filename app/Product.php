@@ -29,7 +29,7 @@ class Product extends Model
         'category_id' => 'integer'
     ];
 
-    protected $appends = ['tags', 'dimensions'];
+    protected $appends = ['tags', 'dimensions', 'main_image'];
 
     private $rules = [
         'create' => [
@@ -105,15 +105,12 @@ class Product extends Model
         return $this->dimensions()->get();
     }
 
-    /* public function featuredImage()
+    public function getMainImageAttribute()
     {
-        return $this->morphOne(Media::class, 'imageable');
+       if(!empty($this->featured_image)) {
+            $featuredImage = Media::findOrFail($this->featured_image);
+            return  $featuredImage;
+        }
     }
-
-    public function getFeaturedImageAttribute()
-    {
-        return $this->featuredImage()->get();
-    }
-    */
 
 }
