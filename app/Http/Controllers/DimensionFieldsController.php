@@ -72,6 +72,8 @@ class DimensionFieldsController extends Controller
     public function update($dimensionFieldID)
     {
         $data = Input::all();
+        $categoriesAdd = $data['categoriesAdd'];
+        $categoriesRemove = $data['categoriesRemove'];
 
         $dimensionField = DimensionField::findOrFail($dimensionFieldID);
         $response = new Response();
@@ -81,12 +83,51 @@ class DimensionFieldsController extends Controller
 
         if ($saved === true) {
             $response->setStatusCode(Response::HTTP_NO_CONTENT);
+            if(!empty($categoriesAdd)) {
+                foreach($categoriesAdd as $category) {
+                    $this->assignCategory($category, $dimensionFieldID);
+                }
+            }
+
+            if(!empty($categoriesRemove)) {
+                foreach($categoriesRemove as $category) {
+                    $this->removeCategory($category, $dimensionFieldID);
+                }
+            }
+
             return $response;
         }
 
         $response->setContent([ 'error' => 'Unknown error' ]);
         $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
         return $response;
+    }
+
+    public function assignCategory($category, $dimensionFieldID)
+    {
+        $dimensionField = DimensionField::findOrFail($dimensionFieldID);
+
+        $categoryID = intval($category);
+        $response = new Response();
+
+        if (!empty($dimensionField) && !empty($categoryID)) {
+            $category = ProductCategory::findOrFail($categoryID);
+            if (!$dimensionField->categories->contains($category->id)) {
+                $dimensionField->categories()->attach($category);
+            }
+        }
+    }
+
+    public function removeCategory($category, $dimensionFieldID)
+    {
+        $dimensionField = DimensionField::findOrFail($dimensionFieldID);
+
+        $categoryID = intval($category);
+
+        if (!empty($dimensionField) && !empty($categoryID)) {
+            $category = ProductCategory::findOrFail($categoryID);
+            $dimensionField->categories()->detach($category);
+        }
     }
 
     public function assign(Request $request, $dimensionFieldID)
