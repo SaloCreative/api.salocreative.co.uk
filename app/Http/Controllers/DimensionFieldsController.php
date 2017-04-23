@@ -36,6 +36,8 @@ class DimensionFieldsController extends Controller
     public function create()
     {
         $data = Input::all();
+        $categoriesAdd = $data['categories'];
+
         $dimensionField = new DimensionField();
 
         $response = new Response();
@@ -47,6 +49,11 @@ class DimensionFieldsController extends Controller
             $response->setStatusCode(Response::HTTP_CREATED);
             $response->headers->set('Location', route('page', $dimensionField->id));
             $response->setContent($this->show($dimensionField->id));
+            if(!empty($categoriesAdd)) {
+                foreach($categoriesAdd as $category) {
+                    $this->assignCategory($category, $dimensionField->id);
+                }
+            }
             return $response;
         }
 
