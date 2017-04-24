@@ -104,11 +104,6 @@ class ProductCategoriesController extends Controller
         foreach($productCategory->dimensionFields as $dimensionField) {
             array_push($dimensionFields, $dimensionField);
         }
-        $result = (object)[
-            'category' => $productCategory,
-            'dimensions' => $dimensionFields
-
-        ];
         return $productCategory;
     }
 
