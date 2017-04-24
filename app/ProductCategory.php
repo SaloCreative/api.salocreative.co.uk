@@ -86,6 +86,13 @@ class ProductCategory extends Entity implements ProductCategoryInterface
 
     public function dimensionFields()
     {
-        return $this->hasMany(DimensionField::class);
+        /*$categoryID = $this->id;
+        $fields = DimensionField::whereHas('categories', function ($q) use ($categoryID) {
+            $q->where('dimension_field_product_category.product_category_id', $categoryID);
+        })->get();
+
+        return $fields; */
+        return $this->belongsToMany(DimensionField::class);
+
     }
 }

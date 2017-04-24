@@ -14,7 +14,7 @@ class Dimension extends Model
      * @var array
      */
     protected $fillable = [
-        'dimension'
+        'dimension', 'field', 'product_id'
     ];
 
     protected $appends = ['dimension_field'];
