@@ -66,6 +66,7 @@ $app->group(['prefix' => '/api/v1', 'middleware' => 'auth'], function () use ($a
     $app->delete('/products/categories/{productsCategoryID:[0-9]+}', ['as' => 'productsCategoryDelete', 'uses' => 'ProductCategoriesController@delete']);
 
     $app->post('/products/dimensions', ['as' => 'dimensionManage', 'uses' => 'DimensionsController@manage']);
+    $app->post('/products/dimensions/add/{productID:[0-9]+}', ['as' => 'dimensionsAdd', 'uses' => 'DimensionsController@bulkAdd']);
 
     $app->get('/products/dimensions/fields', ['as' => 'dimensionFields', 'uses' => 'DimensionFieldsController@index']);
     $app->get('/products/dimensions/fields/{dimensionFieldsID:[0-9]+}', ['as' => 'dimensionField', 'uses' => 'DimensionFieldsController@show']);

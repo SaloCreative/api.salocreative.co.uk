@@ -46,6 +46,32 @@ class DimensionsController extends Controller
 
     }
 
+    public function bulkAdd($productID)
+    {
+        $dimensions = Input::all();
+        $response = new Response();
+        $saved = false;
+
+        foreach($dimensions as $item) {
+            $item['product_id'] = $productID;
+            $dimension = Dimension::where('product_id', '=', $productID)->where('field', '=',  $item['field'])->first();
+            if(!$dimension) {
+                $dimension = new Dimension();
+                $dimension->fill($item);
+                $saved = $dimension->save();
+            }
+        }
+
+        if ($saved === true) {
+            $response->setStatusCode(Response::HTTP_CREATED);
+            return $response;
+        }
+
+        $response->setContent([ 'error' => 'Unknown error' ]);
+        $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+        return $response;
+    }
+
     public function show($dimensionID)
     {
         $dimension = Dimension::findOrFail($dimensionID);
