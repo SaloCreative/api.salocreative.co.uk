@@ -2,174 +2,54 @@
 
 namespace App\Http\Controllers;
 
-use App\Product;
 use App\Dimension;
-use App\DimensionField;
-use App\ProductCategory;
-use App\User;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Input;
 
 class DimensionsController extends Controller
 {
-
-    public function index(Request $request)
-    {
-        // Ordering
-        $orderByDirectionsAllowed = [ 'ASC', 'DESC' ];
-        $orderByColumn = !empty($request->query('orderBy')) &&  $request->query('orderBy') !== 'undefined' ? $request->query('orderBy') : 'id';
-        $orderByDirection = !empty($request->query('orderByDirection')) ? $request->query('orderByDirection') : $orderByDirectionsAllowed[1];
-        if (in_array($orderByDirection, $orderByDirectionsAllowed) === false) {
-            $orderByDirection = $orderByDirectionsAllowed[1];
-        }
-
-        $dimensionFields = DimensionField::orderBy($orderByColumn, $orderByDirection);
-        $perPage = !empty($request->query('perPage')) && $request->query('perPage') !== 'undefined' ? $request->query('perPage') : 9999;
-        $dimensionFields = $dimensionFields->paginate($perPage);
-        $dimensionFields->appends(Input::except('page'));
-
-        return $dimensionFields;
-    }
-
-    public function create()
+    public function manage()
     {
         $data = Input::all();
-
-        $dimension = new Dimension();
-
+        $newDim = $data['dimension'];
+        $field = $data['field'];
+        $product =$data['product_id'];
         $response = new Response();
 
-        $dimension->fill($data);
-        $saved = $dimension->save();
+        if ($product && $field) {
+            $dimension = Dimension::where('product_id', '=', $product)->where('field', '=', $field)->first();
 
-        if ($saved === true) {
-            $response->setStatusCode(Response::HTTP_CREATED);
-            $response->headers->set('Location', route('page', $dimension->id));
-            $response->setContent($this->show($dimension->id));
-            return $response;
+            if ($newDim){
+                if (!$dimension) {
+                    $dimension = new Dimension();
+                }
+                $dimension->fill($data);
+                $saved = $dimension->save();
+
+                if ($saved === true) {
+                    $response->setStatusCode(Response::HTTP_CREATED);
+                    $response->headers->set('Location', route('page', $dimension->id));
+                    $response->setContent($this->show($dimension->id));
+                    return $response;
+                }
+
+            } else if ($dimension) {
+                $deleted = $dimension->delete();
+                return ['status' => $deleted];
+            }
+
         }
 
         $response->setContent([ 'error' => 'Unknown error' ]);
         $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
         return $response;
+
     }
 
     public function show($dimensionID)
     {
         $dimension = Dimension::findOrFail($dimensionID);
         return $dimension;
-    }
-
-    public function delete($dimensionFieldID)
-    {
-        $dimensionField = DimensionField::findOrFail($dimensionFieldID);
-        $deleted = $dimensionField->delete();
-
-        return ['status' => $deleted];
-    }
-
-    public function update($dimensionFieldID)
-    {
-        $data = Input::all();
-        $categoriesAdd = $data['categoriesAdd'];
-        $categoriesRemove = $data['categoriesRemove'];
-
-        $dimensionField = DimensionField::findOrFail($dimensionFieldID);
-        $response = new Response();
-
-        $dimensionField->fill($data);
-        $saved = $dimensionField->save();
-
-        if ($saved === true) {
-            $response->setStatusCode(Response::HTTP_NO_CONTENT);
-            if(!empty($categoriesAdd)) {
-                foreach($categoriesAdd as $category) {
-                    $this->assignCategory($category, $dimensionFieldID);
-                }
-            }
-
-            if(!empty($categoriesRemove)) {
-                foreach($categoriesRemove as $category) {
-                    $this->removeCategory($category, $dimensionFieldID);
-                }
-            }
-
-            return $response;
-        }
-
-        $response->setContent([ 'error' => 'Unknown error' ]);
-        $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
-        return $response;
-    }
-
-    public function assignCategory($category, $dimensionFieldID)
-    {
-        $dimensionField = DimensionField::findOrFail($dimensionFieldID);
-
-        $categoryID = intval($category);
-        $response = new Response();
-
-        if (!empty($dimensionField) && !empty($categoryID)) {
-            $category = ProductCategory::findOrFail($categoryID);
-            if (!$dimensionField->categories->contains($category->id)) {
-                $dimensionField->categories()->attach($category);
-            }
-        }
-    }
-
-    public function removeCategory($category, $dimensionFieldID)
-    {
-        $dimensionField = DimensionField::findOrFail($dimensionFieldID);
-
-        $categoryID = intval($category);
-
-        if (!empty($dimensionField) && !empty($categoryID)) {
-            $category = ProductCategory::findOrFail($categoryID);
-            $dimensionField->categories()->detach($category);
-        }
-    }
-
-    public function assign(Request $request, $dimensionFieldID)
-    {
-        $dimensionField = DimensionField::findOrFail($dimensionFieldID);
-
-        $categoryID = intval(json_decode($request->getContent())->category);
-        $response = new Response();
-
-        if (!empty($dimensionField) && !empty($categoryID)) {
-            $category = ProductCategory::findOrFail($categoryID);
-            if (!$dimensionField->categories->contains($category->id)) {
-                $dimensionField->categories()->attach($category);
-            }
-            $response->setStatusCode(Response::HTTP_NO_CONTENT);
-        } else {
-            $response->setContent([ 'error' => 'Unknown error' ]);
-            $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
-        return $response;
-
-    }
-
-    public function remove(Request $request, $dimensionFieldID)
-    {
-        $dimensionField = DimensionField::findOrFail($dimensionFieldID);
-
-        $categoryID = intval(json_decode($request->getContent())->category);
-        $response = new Response();
-
-        if (!empty($dimensionField) && !empty($categoryID)) {
-            $category = ProductCategory::findOrFail($categoryID);
-            $dimensionField->categories()->detach($category);
-            $response->setStatusCode(Response::HTTP_NO_CONTENT);
-        } else {
-            $response->setContent([ 'error' => 'Unknown error' ]);
-            $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
-        return $response;
-
     }
 
 }

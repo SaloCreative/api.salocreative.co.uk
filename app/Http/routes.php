@@ -65,11 +65,7 @@ $app->group(['prefix' => '/api/v1', 'middleware' => 'auth'], function () use ($a
     $app->put('/products/categories/{productsCategoryID:[0-9]+}', ['as' => 'productsCategoryUpdate', 'uses' => 'ProductCategoriesController@update']);
     $app->delete('/products/categories/{productsCategoryID:[0-9]+}', ['as' => 'productsCategoryDelete', 'uses' => 'ProductCategoriesController@delete']);
 
-    $app->get('/products/dimensions', ['as' => 'dimensions', 'uses' => 'DimensionsController@index']);
-    $app->get('/products/dimensions/{dimensionID:[0-9]+}', ['as' => 'dimension', 'uses' => 'DimensionsController@show']);
-    $app->post('/products/dimensions', ['as' => 'dimensionCreate', 'uses' => 'DimensionsController@create']);
-    $app->put('/products/dimensions/{dimensionID:[0-9]+}', ['as' => 'dimensionUpdate', 'uses' => 'DimensionsController@update']);
-    $app->delete('/products/dimensions/{dimensionID:[0-9]+}', ['as' => 'dimensionDelete', 'uses' => 'DimensionsController@delete']);
+    $app->post('/products/dimensions', ['as' => 'dimensionManage', 'uses' => 'DimensionsController@manage']);
 
     $app->get('/products/dimensions/fields', ['as' => 'dimensionFields', 'uses' => 'DimensionFieldsController@index']);
     $app->get('/products/dimensions/fields/{dimensionFieldsID:[0-9]+}', ['as' => 'dimensionField', 'uses' => 'DimensionFieldsController@show']);
