@@ -65,6 +65,18 @@ $app->group(['prefix' => '/api/v1', 'middleware' => 'auth'], function () use ($a
     $app->put('/products/categories/{productsCategoryID:[0-9]+}', ['as' => 'productsCategoryUpdate', 'uses' => 'ProductCategoriesController@update']);
     $app->delete('/products/categories/{productsCategoryID:[0-9]+}', ['as' => 'productsCategoryDelete', 'uses' => 'ProductCategoriesController@delete']);
 
+    $app->post('/products/dimensions', ['as' => 'dimensionManage', 'uses' => 'DimensionsController@manage']);
+    $app->post('/products/dimensions/add/{productID:[0-9]+}', ['as' => 'dimensionsAdd', 'uses' => 'DimensionsController@bulkAdd']);
+
+    $app->get('/products/dimensions/fields', ['as' => 'dimensionFields', 'uses' => 'DimensionFieldsController@index']);
+    $app->get('/products/dimensions/fields/{dimensionFieldsID:[0-9]+}', ['as' => 'dimensionField', 'uses' => 'DimensionFieldsController@show']);
+    $app->post('/products/dimensions/fields', ['as' => 'dimensionFieldCreate', 'uses' => 'DimensionFieldsController@create']);
+    $app->put('/products/dimensions/fields/{dimensionFieldID:[0-9]+}', ['as' => 'dimensionFieldUpdate', 'uses' => 'DimensionFieldsController@update']);
+    $app->delete('/products/dimensions/fields/{dimensionFieldID:[0-9]+}', ['as' => 'dimensionFieldDelete', 'uses' => 'DimensionFieldsController@delete']);
+
+    $app->post('/products/dimensions/fields/assign/{dimensionFieldID:[0-9]+}', ['as' => 'dimensionFieldAssign', 'uses' => 'DimensionFieldsController@assign']);
+    $app->put('/products/dimensions/fields/assign/{dimensionFieldID:[0-9]+}', ['as' => 'dimensionFieldRemove', 'uses' => 'DimensionFieldsController@remove']);
+
     $app->get('/products/tags', ['as' => 'productsTags', 'uses' => 'ProductTagsController@index']);
     $app->get('/products/tags/{productsTagID:[0-9]+}', ['as' => 'productsTag', 'uses' => 'ProductTagsController@show']);
     $app->post('/products/tags', ['as' => 'productsTagCreate', 'uses' => 'ProductTagsController@create']);

@@ -83,4 +83,10 @@ class ProductCategory extends Entity implements ProductCategoryInterface
     {
         return $this->hasMany(Product::class, App::make(ProductCategory::class)->getKeyName());
     }
+
+    public function dimensionFields()
+    {
+        return $this->belongsToMany(DimensionField::class);
+
+    }
 }

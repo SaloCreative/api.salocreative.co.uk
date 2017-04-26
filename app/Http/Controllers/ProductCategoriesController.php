@@ -100,6 +100,10 @@ class ProductCategoriesController extends Controller
     public function show($productCategoryID)
     {
         $productCategory = ProductCategory::findOrFail($productCategoryID);
+        $dimensionFields = array();
+        foreach($productCategory->dimensionFields as $dimensionField) {
+            array_push($dimensionFields, $dimensionField);
+        }
         return $productCategory;
     }
 
