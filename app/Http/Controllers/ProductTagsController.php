@@ -147,4 +147,21 @@ class ProductTagsController extends Controller
         return $response;
     }
 
+    public function bulkAdd($productID)
+    {
+        $tags = Input::all();
+        $product = Product::findOrFail($productID);
+        $response = new Response();
+
+        foreach($tags as $item) {
+            $productTag = ProductTag::findOrFail($item['id']);
+            if (!$productTag->products->contains($product->id)) {
+                $productTag->products()->attach($productID);
+            }
+        }
+
+        $response->setStatusCode(Response::HTTP_NO_CONTENT);
+        return $response;
+    }
+
 }
