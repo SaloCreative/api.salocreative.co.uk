@@ -121,6 +121,7 @@ class Product extends Model
         $gallery = array();
         foreach ($items as $item) {
             $image = Media::findOrFail($item->id);
+            $image->order = $item->order;
             array_push($gallery, $image);
         }
         return $gallery;
