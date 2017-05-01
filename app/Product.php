@@ -120,7 +120,7 @@ class Product extends Model
         $items = DB::table('product_media')->where('product_id', '=', $this->id)->orderBy('order', 'ASC')->get();
         $gallery = array();
         foreach ($items as $item) {
-            $image = Media::findOrFail($item->id);
+            $image = Media::findOrFail($item->media_id);
             $image->order = $item->order;
             array_push($gallery, $image);
         }
