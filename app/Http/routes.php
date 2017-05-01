@@ -77,6 +77,8 @@ $app->group(['prefix' => '/api/v1', 'middleware' => 'auth'], function () use ($a
     $app->post('/products/dimensions/fields/assign/{dimensionFieldID:[0-9]+}', ['as' => 'dimensionFieldAssign', 'uses' => 'DimensionFieldsController@assign']);
     $app->put('/products/dimensions/fields/assign/{dimensionFieldID:[0-9]+}', ['as' => 'dimensionFieldRemove', 'uses' => 'DimensionFieldsController@remove']);
 
+    $app->get('/products/gallery/{productsTagID:[0-9]+}', ['as' => 'productImages', 'uses' => 'ProductGalleryController@gallery']);
+
     $app->get('/products/tags', ['as' => 'productsTags', 'uses' => 'ProductTagsController@index']);
     $app->get('/products/tags/{productsTagID:[0-9]+}', ['as' => 'productsTag', 'uses' => 'ProductTagsController@show']);
     $app->post('/products/tags', ['as' => 'productsTagCreate', 'uses' => 'ProductTagsController@create']);
