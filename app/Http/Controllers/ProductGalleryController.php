@@ -63,5 +63,20 @@ class ProductGalleryController extends Controller
         }
     }
 
+    public function orderImages($productID)
+    {
+        $data = Input::all();
+        $product = Product::findOrFail($productID);
+
+        if ($product && $data) {
+            foreach ($data as $image) {
+                DB::table('product_media')
+                    ->where('product_id', '=', $productID)
+                    ->where('media_id', '=', $image['id'])
+                    ->update(['order' => $image['order']]);
+            }
+        }
+    }
+
 
 }
