@@ -78,5 +78,11 @@ class ProductGalleryController extends Controller
         }
     }
 
-
+    public function removeImage($productID)
+    {
+        $data = Input::all();
+        if ($data) {
+            DB::table('product_media')->where('product_id', '=', $productID)->where('media_id', '=', $data['id'])->delete();
+        }
+    }
 }
