@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
+use App\Media;
 
 class Product extends Model
 {
@@ -29,7 +31,7 @@ class Product extends Model
         'category_id' => 'integer'
     ];
 
-    protected $appends = ['tags', 'dimensions', 'main_image'];
+    protected $appends = ['tags', 'dimensions', 'main_image', 'gallery'];
 
     private $rules = [
         'create' => [
@@ -111,6 +113,18 @@ class Product extends Model
             $featuredImage = Media::findOrFail($this->featured_image);
             return  $featuredImage;
         }
+    }
+
+    public function getGalleryAttribute()
+    {
+        $items = DB::table('product_media')->where('product_id', '=', $this->id)->orderBy('order', 'ASC')->get();
+        $gallery = array();
+        foreach ($items as $item) {
+            $image = Media::findOrFail($item->media_id);
+            $image->order = $item->order;
+            array_push($gallery, $image);
+        }
+        return $gallery;
     }
 
 }
