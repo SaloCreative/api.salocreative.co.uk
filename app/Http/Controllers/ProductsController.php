@@ -23,7 +23,12 @@ class ProductsController extends Controller
             $orderByDirection = $orderByDirectionsAllowed[0];
         }
 
-        $products = Product::orderBy($orderByColumn, $orderByDirection);
+        if ($request->query('category') && $request->query('category') !== 'undefined') {
+            $products = Product::orderBy($orderByColumn, $orderByDirection)->where('category_id', '=', $request->query('category'));
+        } else {
+            $products = Product::orderBy($orderByColumn, $orderByDirection);
+        }
+
         $perPage = !empty($request->query('perPage')) ? $request->query('perPage') : 9999;
         $products = $products->paginate($perPage);
         $products->appends(Input::except('page'));
