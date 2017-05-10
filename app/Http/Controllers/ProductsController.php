@@ -6,6 +6,7 @@ use App\Product;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Input;
@@ -23,8 +24,26 @@ class ProductsController extends Controller
             $orderByDirection = $orderByDirectionsAllowed[0];
         }
 
-        if ($request->query('category') && $request->query('category') !== 'undefined') {
-            $products = Product::orderBy($orderByColumn, $orderByDirection)->where('category_id', '=', $request->query('category'));
+        // Categories
+        $category = ($request->query('category') !== 'undefined') ? $request->query('category') : '';
+
+        // Search
+        $search = ($request->query('search') !== 'undefined') ? $request->query('search') : '';
+
+        if($category && $search) {
+            $products = Product::orderBy($orderByColumn, $orderByDirection)
+                ->where('category_id', '=', $category)
+                ->where('title', 'LIKE', "%$search%")
+                ->orWhere('content', 'LIKE', "%$search%")
+                ->orWhere('sku', 'LIKE', "%$search%");
+
+        } else if ($category) {
+            $products = Product::orderBy($orderByColumn, $orderByDirection)->where('category_id', '=', $category);
+        } else if ($search) {
+            $products = Product::orderBy($orderByColumn, $orderByDirection)
+                ->where('title', 'LIKE', "%$search%")
+                ->orWhere('content', 'LIKE', "%$search%")
+                ->orWhere('sku', 'LIKE', "%$search%");
         } else {
             $products = Product::orderBy($orderByColumn, $orderByDirection);
         }
