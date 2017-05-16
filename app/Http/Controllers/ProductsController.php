@@ -26,7 +26,6 @@ class ProductsController extends Controller
 
         // Categories
         $category = ($request->query('category') !== 'undefined') ? $request->query('category') : '';
-
         // Search
         $search = ($request->query('search') !== 'undefined') ? $request->query('search') : '';
 
@@ -36,7 +35,6 @@ class ProductsController extends Controller
                 ->where('title', 'LIKE', "%$search%")
                 ->orWhere('content', 'LIKE', "%$search%")
                 ->orWhere('sku', 'LIKE', "%$search%");
-
         } else if ($category) {
             $products = Product::orderBy($orderByColumn, $orderByDirection)->where('category_id', '=', $category);
         } else if ($search) {
