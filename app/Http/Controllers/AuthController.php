@@ -17,7 +17,10 @@ class AuthController extends Controller
         $user = User::where('email', '=', $email)->where('suspended', '=', false)->first();
 
         if ($user && Hash::check($password, $user->password)) {
-            return [ 'token' => $user->password ];
+            return [
+                'token' => $user->password,
+                'user' => $user
+            ];
         }
 
         return new Response(['error' => 'Login Failed'], Response::HTTP_UNAUTHORIZED);
