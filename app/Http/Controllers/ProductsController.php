@@ -117,7 +117,7 @@ class ProductsController extends Controller
 
             if ($saved === true) {
                 $response->setStatusCode(Response::HTTP_NO_CONTENT);
-                return $response;
+                return $product;
             }
 
         } else {
