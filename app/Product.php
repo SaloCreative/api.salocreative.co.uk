@@ -20,7 +20,7 @@ class Product extends Model
      * @var array
      */
     protected $fillable = [
-        'title', 'slug', 'sku', 'content', 'category_id', 'inStock', 'price', 'online', 'author', 'editor', 'seo_title', 'seo_description', 'featured_image'
+        'title', 'slug', 'sku', 'content', 'category_id', 'inStock', 'price', 'online', 'featured', 'author', 'editor', 'seo_title', 'seo_description', 'featured_image'
     ];
 
     protected $casts = [
@@ -28,6 +28,7 @@ class Product extends Model
         'author' => 'integer',
         'editor' => 'integer',
         'inStock' => 'integer',
+        'featured' => 'boolean',
         'category_id' => 'integer'
     ];
 
