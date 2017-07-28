@@ -70,6 +70,7 @@ $app->group(['prefix' => '/api/v1', 'middleware' => 'auth'], function () use ($a
     $app->put('/products/{product:[0-9]+}', ['as' => 'productUpdate', 'uses' => 'ProductsController@update']);
     $app->delete('/products/{product:[0-9]+}', ['as' => 'productDelete', 'uses' => 'ProductsController@delete']);
 
+    $app->post('/products/add', ['as' => 'productCreate', 'uses' => 'ProductsController@create']);
     $app->put('/products/edit/{product:[0-9]+}', ['as' => 'productUpdate', 'uses' => 'ProductsController@update']);
 
     // Categories
