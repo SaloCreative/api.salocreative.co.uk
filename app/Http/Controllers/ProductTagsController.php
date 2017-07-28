@@ -110,33 +110,35 @@ class ProductTagsController extends Controller
 
     public function assign(Request $request, $productTagID)
     {
+        $data = Input::all();
         $productTag = ProductTag::findOrFail($productTagID);
 
         $response = new Response();
 
-        if(!empty($request->query('assignTo'))) {
-            $productID = intval($request->query('assignTo'));
+        if(!empty($data['productID'])) {
+            $productID = intval($data['productID']);
             $product = Product::findOrFail($productID);
             if (!$productTag->products->contains($product->id)) {
                 $productTag->products()->attach($productID);
             }
             $response->setStatusCode(Response::HTTP_NO_CONTENT);
         } else {
-            $response->setContent([ 'error' => 'No product set' ]);
+            $response->setContent([ 'error' => 'Couldn\'t associate tag' ]);
             $response->setStatusCode(Response::HTTP_BAD_REQUEST);
         }
 
         return $response;
     }
 
-    public function remove(Request $request, $productTagID)
+    public function unassign(Request $request, $productTagID)
     {
+        $data = Input::all();
         $productTag = ProductTag::findOrFail($productTagID);
 
         $response = new Response();
 
-        if(!empty($request->query('assignTo'))) {
-            $product = intval($request->query('assignTo'));
+        if(!empty($data['productID'])) {
+            $product = intval($data['productID']);
             $productTag->products()->detach($product);
             $response->setStatusCode(Response::HTTP_NO_CONTENT);
         } else {
@@ -147,7 +149,7 @@ class ProductTagsController extends Controller
         return $response;
     }
 
-    public function bulkAdd($productID)
+    public function bulkadd($productID)
     {
         $tags = Input::all();
         $product = Product::findOrFail($productID);

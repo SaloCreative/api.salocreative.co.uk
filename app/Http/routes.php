@@ -107,9 +107,10 @@ $app->group(['prefix' => '/api/v1', 'middleware' => 'auth'], function () use ($a
     $app->post('/products/tags', ['as' => 'productsTagCreate', 'uses' => 'ProductTagsController@create']);
     $app->put('/products/tags/{productsTagID:[0-9]+}', ['as' => 'productsTagUpdate', 'uses' => 'ProductTagsController@update']);
     $app->delete('/products/tags/{productsTagID:[0-9]+}', ['as' => 'productsTagDelete', 'uses' => 'ProductTagsController@delete']);
+
     $app->post('/products/tags/assign/{productsTagID:[0-9]+}', ['as' => 'productsTagAssign', 'uses' => 'ProductTagsController@assign']);
-    $app->post('/products/tags/add/{productID:[0-9]+}', ['as' => 'productsTagBulkAssign', 'uses' => 'ProductTagsController@bulkAdd']);
-    $app->delete('/products/tags/assign/{productsTagID:[0-9]+}', ['as' => 'productsTagRemove', 'uses' => 'ProductTagsController@remove']);
+    $app->post('/products/tags/unassign/{productsTagID:[0-9]+}', ['as' => 'productsTagRemove', 'uses' => 'ProductTagsController@unassign']);
+    $app->post('/products/tags/assign/multiple/{productID:[0-9]+}', ['as' => 'productsTagBulkAssign', 'uses' => 'ProductTagsController@bulkadd']);
 
     /**
      * SETTINGS
