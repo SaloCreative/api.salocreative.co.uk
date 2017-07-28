@@ -166,4 +166,21 @@ class ProductTagsController extends Controller
         return $response;
     }
 
+    public function bulkremove($productID)
+    {
+        $tags = Input::all();
+        $product = Product::findOrFail($productID);
+        $response = new Response();
+
+        foreach($tags as $item) {
+            $productTag = ProductTag::findOrFail($item['id']);
+            if ($productTag->products->contains($product->id)) {
+                $productTag->products()->detach($productID);
+            }
+        }
+
+        $response->setStatusCode(Response::HTTP_NO_CONTENT);
+        return $response;
+    }
+
 }
