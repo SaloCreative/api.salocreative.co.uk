@@ -112,6 +112,7 @@ $app->group(['prefix' => '/api/v1', 'middleware' => 'auth'], function () use ($a
     $app->post('/products/tags/unassign/{productsTagID:[0-9]+}', ['as' => 'productsTagRemove', 'uses' => 'ProductTagsController@unassign']);
     $app->post('/products/tags/assign/multiple/{productID:[0-9]+}', ['as' => 'productsTagBulkAssign', 'uses' => 'ProductTagsController@bulkadd']);
     $app->post('/products/tags/unassign/multiple/{productID:[0-9]+}', ['as' => 'productsTagBulkRemove', 'uses' => 'ProductTagsController@bulkremove']);
+    $app->post('/products/tags/assign/update/{productID:[0-9]+}', ['as' => 'productsTagManageAssignment', 'uses' => 'ProductTagsController@bulkaddremove']);
 
     /**
      * SETTINGS
