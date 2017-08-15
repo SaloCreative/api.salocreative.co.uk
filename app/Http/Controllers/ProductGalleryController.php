@@ -21,28 +21,6 @@ class ProductGalleryController extends Controller
         return $gallery;
     }
 
-    public function addImages($productID)
-    {
-        $data = Input::all();
-        $product = Product::findOrFail($productID);
-        if ($product && $data) {
-           foreach($data as $item) {
-               $record = DB::table('product_media')->where('product_id', '=', $productID)->where('media_id', '=', $item['id'])->get();
-               if(!count($record)) {
-                   DB::table('product_media')->insert(
-                       [
-                           'product_id' => $productID,
-                           'media_id' => $item['id'],
-                           'order' => $item['order'],
-                           'updated_at' => time(),
-                           'created_at' => time()
-                       ]
-                   );
-               }
-           }
-        }
-    }
-
     public function addImage($productID)
     {
         $data = Input::all();
@@ -63,6 +41,44 @@ class ProductGalleryController extends Controller
         }
     }
 
+    public function removeImage($productID)
+    {
+        $data = Input::all();
+        if ($data) {
+            DB::table('product_media')->where('product_id', '=', $productID)->where('media_id', '=', $data['id'])->delete();
+        }
+    }
+
+    public function manageImages($productID)
+    {
+        $product = Product::findOrFail($productID);
+        $data = Input::all();
+        if ($product && $data) {
+            $newImageIDs = array();
+            foreach ($data as $item) {
+                array_push($newImageIDs, $item['id']);
+                $record = DB::table('product_media')->where('product_id', '=', $productID)->where('media_id', '=', $item['id'])->get();
+                if (!count($record)) {
+                    DB::table('product_media')->insert(
+                        [
+                            'product_id' => $productID,
+                            'media_id' => $item['id'],
+                            'order' => $item['order'],
+                            'updated_at' => time(),
+                            'created_at' => time()
+                        ]
+                    );
+                }
+            }
+            $records = DB::table('product_media')->where('product_id', '=', $productID)->get();
+            foreach ($records as $record) {
+                if (!in_array($record->media_id, $newImageIDs)) {
+                    DB::table('product_media')->where('product_id', '=', $productID)->where('media_id', '=', $record->media_id)->delete();
+                }
+            }
+        }
+    }
+
     public function orderImages($productID)
     {
         $data = Input::all();
@@ -75,14 +91,6 @@ class ProductGalleryController extends Controller
                     ->where('media_id', '=', $image['id'])
                     ->update(['order' => $image['order']]);
             }
-        }
-    }
-
-    public function removeImage($productID)
-    {
-        $data = Input::all();
-        if ($data) {
-            DB::table('product_media')->where('product_id', '=', $productID)->where('media_id', '=', $data['id'])->delete();
         }
     }
 }

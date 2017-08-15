@@ -64,14 +64,15 @@ $app->group(['prefix' => '/api/v1', 'middleware' => 'auth'], function () use ($a
     /**
      * PRODUCTS
      **/
-    $app->get('/products', ['as' => 'products', 'uses' => 'ProductsController@index']);
     $app->post('/products', ['as' => 'productCreate', 'uses' => 'ProductsController@create']);
-    $app->get('/products/{product:[0-9]+}', ['as' => 'product', 'uses' => 'ProductsController@show']);
     $app->put('/products/{product:[0-9]+}', ['as' => 'productUpdate', 'uses' => 'ProductsController@update']);
     $app->delete('/products/{product:[0-9]+}', ['as' => 'productDelete', 'uses' => 'ProductsController@delete']);
 
+    $app->get('/products', ['as' => 'products', 'uses' => 'ProductsController@index']);
+    $app->get('/products/{product:[0-9]+}', ['as' => 'product', 'uses' => 'ProductsController@show']);
     $app->post('/products/add', ['as' => 'productCreate', 'uses' => 'ProductsController@create']);
     $app->put('/products/edit/{product:[0-9]+}', ['as' => 'productUpdate', 'uses' => 'ProductsController@update']);
+    $app->delete('/products/delete/{product:[0-9]+}', ['as' => 'productDelete', 'uses' => 'ProductsController@delete']);
 
     // Categories
     $app->get('/products/categories', ['as' => 'productCategories', 'uses' => 'ProductCategoriesController@index']);
@@ -96,9 +97,9 @@ $app->group(['prefix' => '/api/v1', 'middleware' => 'auth'], function () use ($a
 
     // Gallery
     $app->get('/products/gallery/{productID:[0-9]+}', ['as' => 'productImages', 'uses' => 'ProductGalleryController@gallery']);
-    $app->post('/products/gallery/{productID:[0-9]+}', ['as' => 'productImageAdd', 'uses' => 'ProductGalleryController@addImage']);
-    $app->put('/products/gallery/{productID:[0-9]+}', ['as' => 'productImageRemoves', 'uses' => 'ProductGalleryController@removeImage']);
-    $app->post('/products/gallery/multiple/{productID:[0-9]+}', ['as' => 'productImagesAdd', 'uses' => 'ProductGalleryController@addImages']);
+    $app->post('/products/gallery/add/{productID:[0-9]+}', ['as' => 'productImageAdd', 'uses' => 'ProductGalleryController@addImage']);
+    $app->put('/products/gallery/remove/{productID:[0-9]+}', ['as' => 'productImageRemoves', 'uses' => 'ProductGalleryController@removeImage']);
+    $app->post('/products/gallery/manage/{productID:[0-9]+}', ['as' => 'productImagesManage', 'uses' => 'ProductGalleryController@manageImages']);
     $app->post('/products/gallery/order/{productID:[0-9]+}', ['as' => 'productImagesOrder', 'uses' => 'ProductGalleryController@orderImages']);
 
     // Tags
