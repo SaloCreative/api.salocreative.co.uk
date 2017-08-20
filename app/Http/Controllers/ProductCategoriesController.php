@@ -36,6 +36,12 @@ class ProductCategoriesController extends Controller
 
         $objTmp = (object) array('aFlat' => array());
         array_walk_recursive($result, create_function('&$v, $k, &$t', '$t->aFlat[] = $v;'), $objTmp);
+        foreach($objTmp->aFlat as $category) {
+            $dimensionFields = array();
+            foreach($category->dimensionFields as $dimensionField) {
+                array_push($dimensionFields, $dimensionField);
+            }
+        }
         return $objTmp->aFlat;
     }
 
